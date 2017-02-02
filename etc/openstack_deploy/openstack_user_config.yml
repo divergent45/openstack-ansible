@@ -93,7 +93,7 @@ haproxy_hosts:
     ip: 10.0.0.50
   haproxy2:
     ip: 10.0.0.52
-  
+    port: 2223
 
 # rsyslog server
 log_hosts:
