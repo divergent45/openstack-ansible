@@ -97,7 +97,7 @@ haproxy_hosts:
 
 # rsyslog server
 log_hosts:
-  infra1:
+  logserver1:
     ip: 10.0.0.57
 
 ###
