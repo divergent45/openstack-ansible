@@ -12,8 +12,8 @@ used_ips:
    - "10.0.2.1,10.0.2.100"
 
 global_overrides:
-  internal_lb_vip_address: 10.0.0.13
-  external_lb_vip_address: 10.0.0.13
+  internal_lb_vip_address: 10.0.0.14
+  external_lb_vip_address: 14.142.104.140
   tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
   provider_networks:
@@ -89,14 +89,16 @@ repo-infra_hosts:
 
 # load balancer
 haproxy_hosts:
+  infra1:
+    ip: 10.0.0.50
   infra2:
-    ip: 10.0.0.13
+    ip: 10.0.0.52
   
 
 # rsyslog server
 log_hosts:
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.57
 
 ###
 ### OpenStack
@@ -222,24 +224,24 @@ metering-compute_hosts:
 #          volume_driver: cinder.volume.drivers.lvm.LVMVolumeDriver
 #          volume_backend_name: LVM_iSCSI
 #          iscsi_ip_address: "10.0.0.12"
-#storage_hosts:
-  infra2:
-    ip: 10.0.0.13
-    container_vars:
-      cinder_backends:
-        limit_container_types: cinder_volume
-        cinder_nfs_client:
-          nfs_shares_config: /etc/cinder/nfs_shares
-          shares:
-            - ip: "10.0.2.15"
-              share: "/vol/cinder"
-  infra1:
-    ip: 10.0.0.12
-    container_vars:
-      cinder_backends:
-        limit_container_types: cinder_volume
-        cinder_nfs_client:
-          nfs_shares_config: /etc/cinder/nfs_shares
-          shares:
-            - ip: "10.0.2.15"
-              share: "/vol/cinder"
+##storage_hosts:
+#  infra2:
+#    ip: 10.0.0.13
+#    container_vars:
+#      cinder_backends:
+#        limit_container_types: cinder_volume
+#        cinder_nfs_client:
+#          nfs_shares_config: /etc/cinder/nfs_shares
+#          shares:
+#            - ip: "10.0.2.15"
+#              share: "/vol/cinder"
+#  infra1:
+#    ip: 10.0.0.12
+#    container_vars:
+#      cinder_backends:
+#        limit_container_types: cinder_volume
+#        cinder_nfs_client:
+#          nfs_shares_config: /etc/cinder/nfs_shares
+#          shares:
+#            - ip: "10.0.2.15"
+#              share: "/vol/cinder"
