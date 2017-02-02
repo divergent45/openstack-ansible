@@ -1,25 +1,56 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-###
-### This file contains commonly used overrides for convenience. Please inspect
-### the defaults for each role to find additional override options.
-###
-
 ## Debug and Verbose options.
-debug: false
+debug: true
+
+proxy_env_url: http://dcim:3128/
+# no_proxy_env: "localhost,127.0.0.1,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+no_proxy_env: "localhost,127.0.0.1,dcim,dcim2,10.0.0.12,10.0.0.13,10.0.0.33,10.0.0.34,10.0.2.15,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+#no_proxy_env: "localhost,127.0.0.1,,10.0.0.*,10.0.0.0,10.0.1.0,10.0.2.0"
+global_environment_variables:
+   HTTP_PROXY: "{{ proxy_env_url }}"
+   HTTPS_PROXY: "{{ proxy_env_url }}"
+   NO_PROXY: "{{ no_proxy_env }}"
+   http_proxy: "{{ proxy_env_url }}"
+   https_proxy: "{{ proxy_env_url }}"
+   no_proxy: "{{ no_proxy_env }}"
+## SSH connection wait time
+# If an increased delay for the ssh connection check is desired,
+# uncomment this variable and set it appropriately.   
+ssh_delay: 15
+#++++++++++++++++++Must for Self signed Certificate++++++++++++++++
+keystone_service_adminuri_insecure: true
+keystone_service_internaluri_insecure: true
+
+#+++++++++++++++++Proxying TLS traffic often interferes with the clients ability to perform 
+#successful validation of the certificate chain.Additional variables may exist
+#within the project and will be named using the *_validate_certs pattern
+pip_validate_certs: false
+galera_package_download_validate_certs: false
+
+
+glance_default_store: file
+
+haproxy_keepalived_external_vip_cidr: 14.142.104.140/29
+haproxy_keepalived_internal_vip_cidr: 10.0.0.14/24
+haproxy_keepalived_external_interface: enp5s0
+haproxy_keepalived_internal_interface: enp9s0
+keepalived_ping_address: "10.0.0.53"
+##Most often, overrides are implemented 
+##for the <service>.conf files (for example, nova.conf). These files use a standard INI file format.
+##
+#
+#nova_nova_conf_overrides:
+#  DEFAULT:
+#    remove_unused_original_minimum_age_seconds: 43200
+#  libvirt:
+#    cpu_mode: host-model
+#    disk_cachemodes: file=directsync,block=none
+#  database:
+#    idle_timeout: 300
+#    max_pool_size: 10
+
+
+
 
 ## Common Glance Overrides
 # Set glance_default_store to "swift" if using Cloud Files backend
@@ -35,6 +66,11 @@ debug: false
 ## Ceph pool name for Glance to use
 # glance_rbd_store_pool: images
 # glance_rbd_store_chunk_size: 8
+
+
+
+
+
 
 ## Common Nova Overrides
 # When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
@@ -129,10 +165,6 @@ debug: false
 #   no_proxy: "{{ no_proxy_env }}"
 
 
-## SSH connection wait time
-# If an increased delay for the ssh connection check is desired,
-# uncomment this variable and set it appropriately.
-#ssh_delay: 5
 
 
 ## HAProxy
@@ -164,7 +196,11 @@ debug: false
 # All the previous variables are used in a var file, fed to the keepalived role.
 # To use another file to feed the role, override the following var:
 # haproxy_keepalived_vars_file: 'vars/configs/keepalived_haproxy.yml'
-
+## Load Balancer Configuration (haproxy/keepalived)
+#haproxy_keepalived_external_vip_cidr: "10.0.0.0/24"
+#haproxy_keepalived_internal_vip_cidr: "10.1.0.0/24"
+#haproxy_keepalived_external_interface: br-flat
+#haproxy_keepalived_internal_interface: br-mgmt
 ## Host security hardening
 # The openstack-ansible-security role provides security hardening for hosts
 # by applying security configurations from the STIG. Hardening is disabled by
@@ -172,3 +208,172 @@ debug: false
 # variable to 'true'.
 # Docs: http://docs.openstack.org/developer/openstack-ansible-security/
 # apply_security_hardening: true
+
+#=======================================================================================
+#haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN=haproxy.example.com"
+#horizon_ssl_self_signed_regen: true
+#rabbitmq_user_ssl_cert:    /tmp/example.com.crt
+#rabbitmq_user_ssl_key:     /tmp/example.com.key
+#rabbitmq_user_ssl_ca_cert: /tmp/ExampleCA.crt
+
+#+++++++++++++++++++++if hardeing of servers are to be avoided++++++++++++++++++++++++++++++++
+#apply_security_hardening: false
+
+##The general format for the variable names used for overrides is
+# <service>_<filename>_<file extension>_overrides. 
+# For example, the variable name used in these examples to add parameters to the nova.conf file
+#  is nova_nova_conf_overrides.
+##
+#
+
+#The general format for the variable 
+#names used for overrides is <service>_<filename>_<file extension>_overrides. 
+#For example, the variable name used in this example to define a meter exclusion 
+#in the pipeline.yml file for the Telemetry service (ceilometer) 
+#is ceilometer_pipeline_yaml_overrides.
+#http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-advanced-config-override.html#overriding-json-files
+
+#Use this method for any files with the INI format for in OpenStack projects deployed in OpenStack-Ansible.
+#++++++++++++++++++++++++Disableing Horizon SSL and CSRF ++++++++++++++++++++++++++++++++=
+
+#check the horizon configurationfile name ??????????????????????????????????????
+#SECURE_PROXY_SSL_HEADER: false
+#CSRF_COOKIE_SECURE: false
+#SESSION_COOKIE_SECURE: false
+#DEBUG: True
+#TEMPLATE_DEBUG: True
+
+
+
+
+
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
+#
+#Galera:
+#
+#        galera_client_my_cnf_overrides
+#        galera_my_cnf_overrides
+#        galera_cluster_cnf_overrides
+#        galera_debian_cnf_overrides
+#
+#Telemetry service (ceilometer):
+#
+#        ceilometer_policy_overrides
+#        ceilometer_ceilometer_conf_overrides
+#        ceilometer_api_paste_ini_overrides
+#        ceilometer_event_definitions_yaml_overrides
+#        ceilometer_event_pipeline_yaml_overrides
+#        ceilometer_pipeline_yaml_overrides
+#
+#Block Storage (cinder):
+#
+#        cinder_policy_overrides
+#        cinder_rootwrap_conf_overrides
+#        cinder_api_paste_ini_overrides
+#        cinder_cinder_conf_overrides
+#
+#Image service (glance):
+#
+#        glance_glance_api_paste_ini_overrides
+#        glance_glance_api_conf_overrides
+#        glance_glance_cache_conf_overrides
+#        glance_glance_manage_conf_overrides
+#        glance_glance_registry_paste_ini_overrides
+#        glance_glance_registry_conf_overrides
+#        glance_glance_scrubber_conf_overrides
+#        glance_glance_scheme_json_overrides
+#        glance_policy_overrides
+#
+#Orchestration service (heat):
+#
+#        heat_heat_conf_overrides
+#        heat_api_paste_ini_overrides
+#        heat_default_yaml_overrides
+#        heat_aws_cloudwatch_alarm_yaml_overrides
+#        heat_aws_rds_dbinstance_yaml_overrides
+#        heat_policy_overrides
+#
+#Identity service (keystone):
+#
+#        keystone_keystone_conf_overrides
+#        keystone_keystone_default_conf_overrides
+#        keystone_keystone_paste_ini_overrides
+#        keystone_policy_overrides
+#
+#Networking service (neutron):
+#
+#        neutron_neutron_conf_overrides
+#        neutron_ml2_conf_ini_overrides
+#        neutron_dhcp_agent_ini_overrides
+#        neutron_api_paste_ini_overrides
+#        neutron_rootwrap_conf_overrides
+#        neutron_policy_overrides
+#        neutron_dnsmasq_neutron_conf_overrides
+#        neutron_l3_agent_ini_overrides
+#        neutron_metadata_agent_ini_overrides
+#        neutron_metering_agent_ini_overrides
+#
+#Compute service (nova):
+#
+#        nova_nova_conf_overrides
+#        nova_rootwrap_conf_overrides
+#        nova_api_paste_ini_overrides
+#        nova_policy_overrides
+#
+#Object Storage service (swift):
+#
+#        swift_swift_conf_overrides
+#        swift_swift_dispersion_conf_overrides
+#        swift_proxy_server_conf_overrides
+#        swift_account_server_conf_overrides
+#        swift_account_server_replicator_conf_overrides
+#        swift_container_server_conf_overrides
+#        swift_container_server_replicator_conf_overrides
+#        swift_object_server_conf_overrides
+#        swift_object_server_replicator_conf_overrides
+#
+#Tempest:
+#
+#        tempest_tempest_conf_overrides
+#
+#pip:
+#
+#        pip_global_conf_overrides
+
+
+
+#A work around for this issue if you are using Squid for your proxy server is to adjust your Squid configuration to remove the line:
+#
+#"http_access deny CONNECT !SSL_ports"
+#
+#Once you've done so, the proxy lib upon which the Ansible uri module depends will be able to use the HTTP CONNECT method against your proxy
+#
+##
+
+
+
+# # List all existing tags.
+# git tag -l
+
+# # Checkout the stable branch and find just the latest tag
+# git checkout stable/newton
+# git describe --abbrev=0 --tags
+
+# # Checkout the latest tag from either method of retrieving the tag.
+# git checkout 15.0.0.0b3
+
+
+
+#/etc/glance/glance-api.conf
+#In the [glance_store] section, configure the local file system store and location of image files:
+#
+#[glance_store]
+#...
+#stores = file,http
+#default_store = file
+#filesystem_store_datadir = /var/lib/glance/images/
+
+
+#/etc/openstack-dashboard/local_settings.py
