@@ -89,9 +89,9 @@ repo-infra_hosts:
 
 # load balancer
 haproxy_hosts:
-  infra1:
+  haproxy1:
     ip: 10.0.0.50
-  infra2:
+  haproxy2:
     ip: 10.0.0.52
   
 
