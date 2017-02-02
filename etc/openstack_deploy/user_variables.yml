@@ -1,25 +1,51 @@
 ---
-# Copyright 2014, Rackspace US, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-###
-### This file contains commonly used overrides for convenience. Please inspect
-### the defaults for each role to find additional override options.
-###
-
 ## Debug and Verbose options.
 debug: true
+
+proxy_env_url: http://dcim:3128/
+# no_proxy_env: "localhost,127.0.0.1,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+no_proxy_env: "localhost,127.0.0.1,dcim,dcim2,10.0.0.12,10.0.0.13,10.0.0.33,10.0.0.34,10.0.2.15,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
+#no_proxy_env: "localhost,127.0.0.1,,10.0.0.*,10.0.0.0,10.0.1.0,10.0.2.0"
+global_environment_variables:
+   HTTP_PROXY: "{{ proxy_env_url }}"
+   HTTPS_PROXY: "{{ proxy_env_url }}"
+   NO_PROXY: "{{ no_proxy_env }}"
+   http_proxy: "{{ proxy_env_url }}"
+   https_proxy: "{{ proxy_env_url }}"
+   no_proxy: "{{ no_proxy_env }}"
+## SSH connection wait time
+# If an increased delay for the ssh connection check is desired,
+# uncomment this variable and set it appropriately.   
+ssh_delay: 15
+#++++++++++++++++++Must for Self signed Certificate++++++++++++++++
+keystone_service_adminuri_insecure: true
+keystone_service_internaluri_insecure: true
+
+#+++++++++++++++++Proxying TLS traffic often interferes with the clients ability to perform 
+#successful validation of the certificate chain.Additional variables may exist
+#within the project and will be named using the *_validate_certs pattern
+pip_validate_certs: false
+galera_package_download_validate_certs: false
+
+
+glance_default_store: file
+
+##Most often, overrides are implemented 
+##for the <service>.conf files (for example, nova.conf). These files use a standard INI file format.
+##
+#
+#nova_nova_conf_overrides:
+#  DEFAULT:
+#    remove_unused_original_minimum_age_seconds: 43200
+#  libvirt:
+#    cpu_mode: host-model
+#    disk_cachemodes: file=directsync,block=none
+#  database:
+#    idle_timeout: 300
+#    max_pool_size: 10
+
+
+
 
 ## Common Glance Overrides
 # Set glance_default_store to "swift" if using Cloud Files backend
@@ -35,6 +61,11 @@ debug: true
 ## Ceph pool name for Glance to use
 # glance_rbd_store_pool: images
 # glance_rbd_store_chunk_size: 8
+
+
+
+
+
 
 ## Common Nova Overrides
 # When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
@@ -128,21 +159,7 @@ debug: true
 #   https_proxy: "{{ proxy_env_url }}"
 #   no_proxy: "{{ no_proxy_env }}"
 
-proxy_env_url: http://dcim:3128/
-# no_proxy_env: "localhost,127.0.0.1,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
-no_proxy_env: "localhost,127.0.0.1,dcim,dcim2,10.0.0.12,10.0.0.13,10.0.0.33,10.0.0.34,10.0.2.15,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
-#no_proxy_env: "localhost,127.0.0.1,,10.0.0.*,10.0.0.0,10.0.1.0,10.0.2.0"
-global_environment_variables:
-   HTTP_PROXY: "{{ proxy_env_url }}"
-   HTTPS_PROXY: "{{ proxy_env_url }}"
-   NO_PROXY: "{{ no_proxy_env }}"
-   http_proxy: "{{ proxy_env_url }}"
-   https_proxy: "{{ proxy_env_url }}"
-   no_proxy: "{{ no_proxy_env }}"
-## SSH connection wait time
-# If an increased delay for the ssh connection check is desired,
-# uncomment this variable and set it appropriately.   
-ssh_delay: 15
+
 
 
 ## HAProxy
@@ -215,15 +232,11 @@ ssh_delay: 15
 #++++++++++++++++++++++++Disableing Horizon SSL and CSRF ++++++++++++++++++++++++++++++++=
 
 #check the horizon configurationfile name ??????????????????????????????????????
-SECURE_PROXY_SSL_HEADER: false
-CSRF_COOKIE_SECURE: false
-SESSION_COOKIE_SECURE: false
-DEBUG: True
-TEMPLATE_DEBUG: True
-
-#++++++++++++++++++Must for Self signed Certificate++++++++++++++++
-keystone_service_adminuri_insecure: true
-keystone_service_internaluri_insecure: true
+#SECURE_PROXY_SSL_HEADER: false
+#CSRF_COOKIE_SECURE: false
+#SESSION_COOKIE_SECURE: false
+#DEBUG: True
+#TEMPLATE_DEBUG: True
 
 
 
@@ -323,4 +336,36 @@ keystone_service_internaluri_insecure: true
 #pip:
 #
 #        pip_global_conf_overrides
+
+
+
+#A work around for this issue if you are using Squid for your proxy server is to adjust your Squid configuration to remove the line:
 #
+#"http_access deny CONNECT !SSL_ports"
+#
+#Once you've done so, the proxy lib upon which the Ansible uri module depends will be able to use the HTTP CONNECT method against your proxy
+#
+##
+
+
+
+# # List all existing tags.
+# git tag -l
+
+# # Checkout the stable branch and find just the latest tag
+# git checkout stable/newton
+# git describe --abbrev=0 --tags
+
+# # Checkout the latest tag from either method of retrieving the tag.
+# git checkout 15.0.0.0b3
+
+
+
+#/etc/glance/glance-api.conf
+#In the [glance_store] section, configure the local file system store and location of image files:
+#
+#[glance_store]
+#...
+#stores = file,http
+#default_store = file
+#filesystem_store_datadir = /var/lib/glance/images/
