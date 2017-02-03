@@ -98,7 +98,7 @@ haproxy_hosts:
 # rsyslog server
 log_hosts:
   logserver1:
-    ip: 10.0.0.57
+    ip: 10.0.0.13
 
 ###
 ### OpenStack
