@@ -32,8 +32,8 @@ glance_default_store: file
 
 haproxy_keepalived_external_vip_cidr: 14.142.104.140/29
 haproxy_keepalived_internal_vip_cidr: 10.0.0.14/24
-haproxy_keepalived_external_interface: enp5s0
-haproxy_keepalived_internal_interface: enp9s0
+haproxy_keepalived_external_interface: br-internet
+haproxy_keepalived_internal_interface: br-mgmt
 keepalived_ping_address: "10.0.0.53"
 ##Most often, overrides are implemented 
 ##for the <service>.conf files (for example, nova.conf). These files use a standard INI file format.
