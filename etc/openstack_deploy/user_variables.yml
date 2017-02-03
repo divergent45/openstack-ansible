@@ -377,3 +377,21 @@ keepalived_ping_address: "10.0.0.53"
 
 
 #/etc/openstack-dashboard/local_settings.py
+
+
+
+#Deploy OpenStack using OpenStack-Ansible
+#
+#    If SSH on the hosts are configured with a port other than port 22, this ~/.ssh/config must be used on the deployment host. Replace all fields containining < > and <SSH-PORT> sections
+#
+#    Host 172.29.236.<IP-RANGE-HERE>?
+#        User root
+#        Port <SSH-PORT>
+#
+#    Host 172.29.236.<INDIVIDUAL-IP-HOST-HERE>
+#            User root
+#            Port <SSH-PORT>
+#
+#    Host *
+#            User root
+#            Port 22
