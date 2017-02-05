@@ -21,6 +21,11 @@ ssh_delay: 15
 keystone_service_adminuri_insecure: true
 keystone_service_internaluri_insecure: true
 
+#++++++++++++++++++++++++++++++++++++++
+haproxy_ssl_self_signed_regen: true
+haproxy_ssl_self_signed_subject: "/C=IN/ST=Karnataka/L=Bangalore/O=ITC/CN=cloudspace.itc.in"
+
+
 #+++++++++++++++++Proxying TLS traffic often interferes with the clients ability to perform 
 #successful validation of the certificate chain.Additional variables may exist
 #within the project and will be named using the *_validate_certs pattern
