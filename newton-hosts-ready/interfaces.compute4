@@ -1,0 +1,84 @@
+# This is a multi-NIC bonded configuration to implement the required bridges
+# for OpenStack-Ansible. This illustrates the configuration of the first
+# Infrastructure host and the IP addresses assigned should be adapted
+# for implementation on the other hosts.
+#
+# After implementing this configuration, the host will need to be
+# rebooted.
+
+# Assuming that enp5s0/2 and eno3/4 are dual port NIC's we pair
+# enp5s0 with eno3 and enp9s0 with eno4 for increased resiliency
+# in the case of one interface card failing.
+
+
+
+
+# Container/Host management VLAN interface
+auto enp5s0
+iface enp5s0 inet manual
+    vlan-raw-device enp5s0
+
+  
+
+# OpenStack Networking VXLAN (tunnel/overlay) VLAN interface
+auto enp9s0
+iface enp9s0 inet manual
+    vlan-raw-device enp9s0
+
+# Storage network VLAN interface (optional)
+auto enp9s0.20
+iface enp9s0.20 inet manual
+    vlan-raw-device enp9s0
+
+# Container/Host management bridge
+auto br-mgmt
+iface br-mgmt inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports enp5s0
+    address 10.0.0.34
+    netmask 255.255.255.0
+#    gateway 172.29.236.1
+#    dns-nameservers 8.8.8.8 8.8.4.4
+
+# OpenStack Networking VXLAN (tunnel/overlay) bridge
+#
+# Only the COMPUTE and NETWORK nodes must have an IP address
+# on this bridge. When used by infrastructure nodes, the
+# IP addresses are assigned to containers which use this
+# bridge.
+#
+
+
+# compute1 VXLAN (tunnel/overlay) bridge config
+auto br-vxlan
+iface br-vxlan inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports enp9s0
+    address 10.0.1.34
+    netmask 255.255.255.0
+
+
+
+# Storage bridge (optional)
+#
+# Only the COMPUTE and STORAGE nodes must have an IP address
+# on this bridge. When used by infrastructure nodes, the
+# IP addresses are assigned to containers which use this
+# bridge.
+#
+
+
+# compute1 Storage bridge
+auto br-storage
+iface br-storage inet static
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports enp9s0.20
+    address 10.0.2.34
+    netmask 255.255.255.0
+source /etc/network/interfaces.d/*.cfg
