@@ -4,17 +4,14 @@ auto eno1
 iface eno1 inet manual
     vlan-raw-device eno1
 ####################################################################################################
-# Container/Host management VLAN interface
-auto eno1.10
-iface eno1.10 inet manual
-    vlan-raw-device eno1
+
 # Container/Host management bridge
 auto br-mgmt
 iface br-mgmt inet static
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
-    bridge_ports eno1.10
+    bridge_ports eno1
     address 10.0.0.33
     netmask 255.255.255.0
 #####################################################################################################
@@ -23,8 +20,8 @@ iface br-mgmt inet static
 # IP addresses are assigned to containers which use this
 # bridge.
 ##########################################################################################################
-auto eno1.20
-iface eno1.20 inet manual
+auto eno1.10
+iface eno1.10 inet manual
     vlan-raw-device eno1
 # Storage bridge (optional)
 auto br-storage
@@ -32,7 +29,7 @@ iface br-storage inet manual
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
-    bridge_ports eno1.20
+    bridge_ports eno1.10
     address 10.0.2.33
     netmask 255.255.255.0
 ######################################################################################################
@@ -43,17 +40,14 @@ iface eno2 inet manual
     vlan-raw-device eno2
 #########################################################################################################
 
-#For br-vlan 
-auto eno2.10
-iface eno2.10 inet manual
-    vlan-raw-device eno2
+
 #OpenStack Networking VLAN bridge
 auto br-vlan
 iface br-vlan inet manual
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
-    bridge_ports eno2.10
+    bridge_ports eno2
 
 #################################################################################################
 Only the COMPUTE and NETWORK nodes must have an IP address
@@ -62,8 +56,8 @@ Only the COMPUTE and NETWORK nodes must have an IP address
 # bridge.
 #######################################################################################
 #For br-vxlan 
-auto eno2.20
-iface eno2.20 inet manual
+auto eno2.10
+iface eno2.10 inet manual
     vlan-raw-device eno2
 auto br-vxlan
 #OpenStack Networking VXLAN (tunnel/overlay) bridge
@@ -71,10 +65,9 @@ iface br-vxlan inet manual
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
-    bridge_ports eno2.20
+    bridge_ports eno2.10
     address 10.0.1.33
     netmask 255.255.255.0 
-
 
 
 source /etc/network/interfaces.d/*.cfg

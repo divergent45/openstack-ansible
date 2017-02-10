@@ -18,6 +18,16 @@ ssh root@controller3 service ntp restart
 
 
 
+ssh root@controller4 apt-get update
+ssh root@controller4 dist-upgrade -y
+ssh root@controller4 apt-get  -y install python bridge-utils debootstrap ifenslave ifenslave-2.6 lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan
+ssh root@controller4  echo 'bonding' >> /etc/modules
+ssh root@controller4  echo '8021q' >> /etc/modules
+ssh root@controller4 service ntp restart
+#ssh root@controller4 reboot
+
+
+
 ssh root@compute3 apt-get update
 ssh root@compute3 dist-upgrade -y
 ssh root@compute3 apt-get  -y install python bridge-utils debootstrap ifenslave ifenslave-2.6 lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan
