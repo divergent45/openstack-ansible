@@ -1,3 +1,9 @@
+ssh root@controller2 'apt install -y  chrony'
+ssh root@controller3 'apt install -y  chrony'
+ssh root@controller4 'apt install -y  chrony'
+ssh root@computer3 'apt install -y  chrony'
+ssh root@computer4 'apt install -y  chrony'
+ssh root@rsyslog 'apt install -y  chrony'
 scp chrony.conf.clients  root@controller2:/etc/chrony/chrony.conf
 scp chrony.conf.clients  root@controller3:/etc/chrony/chrony.conf
 scp chrony.conf.clients  root@controller4:/etc/chrony/chrony.conf
