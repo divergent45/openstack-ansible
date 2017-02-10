@@ -1,5 +1,4 @@
-auto lo
-iface lo inet loopback
+# for controller 3
 
 #Pyhisical Interface Primary 
 auto eno1
@@ -14,9 +13,8 @@ iface br-mgmt inet static
     bridge_waitport 0
     bridge_fd 0
     bridge_ports eno1
-    address 10.0.0.15
+    address 10.0.0.13
     netmask 255.255.255.0
-############################################################################################
 
 #####################################################################################################
 # Storage network VLAN interface (optional)
@@ -33,14 +31,16 @@ iface br-storage inet manual
 ######################################################################################################
 
 
-#####################################################################################################
+
+
 #Physical Interface for VLAN, VXLAN and Storage
 auto eno2
 iface eno2 inet manual
     vlan-raw-device eno2
+#########################################################################################################
 #OpenStack Networking VLAN bridge
 auto br-vlan
-iface br-vlan inet static
+iface br-vlan inet manual
     bridge_stp off
     bridge_waitport 0
     bridge_fd 0
@@ -54,22 +54,9 @@ iface eno2.10 inet manual
 auto br-vxlan
 #OpenStack Networking VXLAN (tunnel/overlay) bridge
 iface br-vxlan inet manual
-   bridge_stp off
-   bridge_waitport 0
-   bridge_fd 0
-   bridge_ports eno2.10
-#####################################################################################################
-# Storage network VLAN interface (optional)
-#auto eno2.20
-#iface eno2.20 inet manual
-#    vlan-raw-device eno2
-# Storage bridge (optional)
-#auto br-storage
-#iface br-storage inet manual
-#    bridge_stp off
-#    bridge_waitport 0
-#    bridge_fd 0
-#    bridge_ports eno2.20
-######################################################################################################
+    bridge_stp off
+    bridge_waitport 0
+    bridge_fd 0
+    bridge_ports eno2.10
 
 source /etc/network/interfaces.d/*.cfg
