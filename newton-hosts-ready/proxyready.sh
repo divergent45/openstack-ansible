@@ -13,6 +13,12 @@ scp updatehostsfile.sh  root@controller3:~/
 ssh root@controller3 ./updatehostsfile.sh
 
 
+scp /etc/environment root@controller4:/etc/environment
+scp /etc/apt/apt.conf root@controller4:/etc/apt/apt.conf
+scp /etc/ntp.conf root@controller4:/etc/ntp.conf
+scp updatehostsfile.sh  root@controller4:~/
+ssh root@controller4  ./updatehostsfile.sh
+
 
 
 scp /etc/environment root@compute3:/etc/environment
