@@ -42,7 +42,7 @@ global_overrides:
         container_bridge: "br-vlan"
         container_type: "veth"
         container_interface: "eth12"
-        host_bind_override: "eth12" #?????? this ovverrides is trying to search eth2 on compute node 
+        #host_bind_override: "eth12" #?????? this ovverrides is trying to search eth2 on compute node 
         type: "flat"
         net_name: "flat"
         group_binds:
@@ -74,18 +74,23 @@ global_overrides:
 
 # galera, memcache, rabbitmq, utility
 shared-infra_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
+    
    
 
 # repository (apt cache, python packages, etc)
 repo-infra_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 
 # load balancer
 haproxy_hosts:
@@ -106,20 +111,24 @@ log_hosts:
 
 # keystone
 identity_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 
 # cinder api services
 storage-infra_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 # glance
 image_hosts:
-  infra2:
+  infra1:
     ip: 10.0.0.13
     container_vars:
       limit_container_types: glance
@@ -129,7 +138,17 @@ image_hosts:
           local_path: "/var/lib/glance/images"
           type: "nfs"
           options: "_netdev,auto"
-  infra1:
+  infra2:
+    ip: 10.0.0.15
+    container_vars:
+      limit_container_types: glance
+      glance_nfs_client:
+        - server: "10.0.2.57"
+          remote_path: "/images"
+          local_path: "/var/lib/glance/images"
+          type: "nfs"
+          options: "_netdev,auto"   
+  infra3:
     ip: 10.0.0.12
     container_vars:
       limit_container_types: glance
@@ -138,55 +157,69 @@ image_hosts:
           remote_path: "/images"
           local_path: "/var/lib/glance/images"
           type: "nfs"
-          options: "_netdev,auto"        
+          options: "_netdev,auto"      
 
 # nova api, conductor, etc services
 compute-infra_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 
 # heat
 orchestration_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 
 # horizon
 dashboard_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 
 # neutron server, agents (L3, etc)
 network_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 # ceilometer (telemetry API)
 metering-infra_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 
 # aodh (telemetry alarm service)
 metering-alarm_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 
 # gnocchi (telemetry metrics storage)
 metrics_hosts:
-  infra2:
-    ip: 10.0.0.13
   infra1:
-    ip: 10.0.0.12
+    ip: 10.0.0.13
+  infra2:
+    ip: 10.0.0.15
+  infra3:
+    ip: 10.0.0.12  
 
 
 # nova hypervisors
@@ -228,7 +261,7 @@ metering-compute_hosts:
 #  infra2:
 #    ip: 10.0.0.13
 #    container_vars:
-#      cinder_backends:
+#      cinder_bacskends:
 #        limit_container_types: cinder_volume
 #        cinder_nfs_client:
 #          nfs_shares_config: /etc/cinder/nfs_shares
