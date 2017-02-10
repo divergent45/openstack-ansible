@@ -8,6 +8,7 @@ iface eno1 inet manual
 # Container/Host management VLAN interface
 auto eno1.10
 iface eno1.10 inet manual
+    vlan-raw-device eno1
 # Container/Host management bridge
 auto br-mgmt
 iface br-mgmt inet static
@@ -24,7 +25,7 @@ iface br-mgmt inet static
 # Storage network VLAN interface (optional)
 auto eno1.20
 iface eno1.20 inet manual
-    vlan-raw-device eno4
+    vlan-raw-device eno1
 # Storage bridge (optional)
 auto br-storage
 iface br-storage inet manual
@@ -40,13 +41,13 @@ iface br-storage inet manual
 #Physical Interface for VLAN, VXLAN and Storage
 auto eno2
 iface eno2 inet manual
-    vlan-raw-device eno4
+    vlan-raw-device eno2
 #########################################################################################################
 
 #For br-vlan 
 auto eno2.10
 iface eno2.10 inet manual
-    vlan-raw-device eno4
+    vlan-raw-device eno2
 #OpenStack Networking VLAN bridge
 auto br-vlan
 iface br-vlan inet manual
@@ -59,7 +60,7 @@ iface br-vlan inet manual
 #For br-vxlan 
 auto eno2.20
 iface eno2.20 inet manual
-    vlan-raw-device eno4
+    vlan-raw-device eno2
 auto br-vxlan
 #OpenStack Networking VXLAN (tunnel/overlay) bridge
 iface br-vxlan inet manual
