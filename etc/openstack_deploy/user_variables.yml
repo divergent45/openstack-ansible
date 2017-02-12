@@ -400,3 +400,6 @@ keepalived_ping_address: "10.0.0.53"
 #    Host *
 #            User root
 #            Port 22
+
+#percona_package_download_validate_certs: yes
+#galera_ignore_cluster_state: false
