@@ -37,6 +37,12 @@ scp /etc/ntp.conf root@compute4:/etc/ntp.conf
 ssh root@compute4 ./updatehostsfile.sh
 
 
+scp /etc/environment root@compute5:/etc/environment
+scp /etc/apt/apt.conf root@compute5:/etc/apt/apt.conf
+scp updatehostsfile.sh  root@compute5:~/
+scp /etc/ntp.conf root@compute5:/etc/ntp.conf
+ssh root@compute5 ./updatehostsfile.sh
+
 
 
 scp /etc/environment root@rsyslog:/etc/environment
