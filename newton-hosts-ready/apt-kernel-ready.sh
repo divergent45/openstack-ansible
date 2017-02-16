@@ -55,6 +55,13 @@ ssh root@compute5  echo '8021q' >> /etc/modules
 ssh root@compute5 service ntp restart
 #ssh root@compute5 reboot
 
+ssh root@compute6 apt-get update
+ssh root@compute6 dist-upgrade -y
+ssh root@compute6 apt-get  -y install python bridge-utils debootstrap ifenslave ifenslave-2.6 lsof lvm2 ntp ntpdate openssh-server sudo tcpdump vlan
+ssh root@compute6  echo 'bonding' >> /etc/modules
+ssh root@compute6  echo '8021q' >> /etc/modules
+ssh root@compute6 service ntp restart
+#ssh root@compute6 reboot
 
 ssh root@rsyslog apt-get update
 ssh root@rsyslog   dist-upgrade -y
