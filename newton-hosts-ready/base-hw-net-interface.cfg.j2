@@ -10,7 +10,7 @@
 auto lo
 iface lo inet loopback
 
-{% for ifc in {{physical_interfaces}} %}
+{% for ifc in {{ physical_interfaces }} %}
 
 auto {{ ifc.name }}
 {% if ifc.address %}
@@ -30,13 +30,13 @@ iface {{ ifc.name }} inet static
 iface {{ ifc.name }} inet manual
 {% endif %}
 {% if  ifc.part_of_vlan %}
-	vlan-raw-device {{ifc.parent_name}}
+	vlan-raw-device {{ ifc.parent_name }}
 {% endif %}
 
 {% endfor %}
 
-{% for ifc in {{physical_interfaces}} %}
+#{% for ifc in {{ physical_interfaces }} %}
 
-{% endfor %}
+#{% endfor %}
 
 {% endraw %}
