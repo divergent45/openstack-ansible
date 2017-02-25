@@ -1,5 +1,5 @@
 #haporxy1 settings 
-compute6_physical_interfaces: 
+physical_interfaces: 
  - eno1: {name: eno1, address: 10.0.0.13, netmask: 255.255.255.0, broadcast: 10.0.0.255, gateway: , dns: , part_of_vlan: True}
  - eno2: {name: eno1, address: , netmask: , broadcast: , gateway: , dns: , part_of_vlan: True}
 
