@@ -1,5 +1,5 @@
 ---
-- hosts: newtonhosts
+- hosts: compute4
   vars_files: 
     - base-hardware-prep-defination.yml    
   become: true
