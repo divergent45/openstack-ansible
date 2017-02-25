@@ -403,3 +403,9 @@ keepalived_ping_address: "10.0.0.53"
 
 #percona_package_download_validate_certs: yes
 #galera_ignore_cluster_state: false
+
+
+
+physical_interfaces: 
+ - eno1: {name: eno1, address: 10.0.0.13, netmask: 255.255.255.0, broadcast: 10.0.0.255, gateway: , dns: , part_of_vlan: True}
+ - eno2: {name: eno1, address: , netmask: , broadcast: , gateway: , dns: , part_of_vlan: True}
