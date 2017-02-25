@@ -1,0 +1,8 @@
+---
+- hosts: newtonhosts
+  vars_files: 
+    - base-hardware-prep-defination.yml    
+  become: true
+- name: testing network intreface template
+  src: base-hw-net-interface.cfg.j2
+  dest: /tmp/base-hw-net-interface.cfg

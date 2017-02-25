@@ -1,0 +1,25 @@
+#haporxy1 settings 
+compute6_physical_interfaces: 
+ - eno1: {name: eno1, address: 10.0.0.13, netmask: 255.255.255.0, broadcast: 10.0.0.255, gateway: , dns: , part_of_vlan: True}
+ - eno2: {name: eno1, address: , netmask: , broadcast: , gateway: , dns: , part_of_vlan: True}
+
+bridge_names:
+ - br-mgmt
+
+haproxy1_br-mgmt_physical_interface_name: enp9s0
+haproxy1_br-mgmt_ip_address: 10.0.0.52
+haproxy1_br-mgmt_netmask: 255.255.255.0
+haproxy1_br-mgmt_network: 10.0.0.0
+haproxy1_br-mgmt_broadcast: 10.0.0.255
+haproxy1_br-mgmt_gateway:
+haproxy1_br-mgmt_dns: 
+
+haproxy1_br-internet_physical_interface_name: enp5s0
+haproxy1_br-internet_ip_address: 14.142.104.138
+haproxy1_br-internet_netmask: 255.255.255.248
+haproxy1_br-internet_network: 14.142.104.136
+haproxy1_br-internet_broadcast: 14.142.104.143
+haproxy1_br-internet_gateway: 14.142.104.137
+haproxy1_br-internet_dns-nameservers: 115.112.18.21 115.112.18.131
+    
+#network setting for comoute host
