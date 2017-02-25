@@ -10,6 +10,8 @@
 auto lo
 iface lo inet loopback
 
+{{ mytest }}
+
 {% for ifc in {{ physical_interfaces }} %}
 
 auto {{ ifc.name }}
