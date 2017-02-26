@@ -11,6 +11,8 @@ ansible hostname {{ ansible_hostname}}
 {#success matched hostname with ansible hostname #}
 {% for pi in hst %}
 {{ pi }}
+{{ pi.name }}
+{{ pi.address }}
  
  {% endfor %}
  
