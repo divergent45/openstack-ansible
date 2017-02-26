@@ -9,5 +9,7 @@
       verbosity: 2
   - name: testing network intreface template
     template:
-      src: base-hw-net-interface.cfg.j2
-      dest: /tmp/base-hw-net-interface.cfg
+      #src: base-hw-net-interface.cfg.j2
+      #dest: /tmp/base-hw-net-interface.cfg
+       src: test.cfg.j2
+       dest: /tmp/test.cfg
