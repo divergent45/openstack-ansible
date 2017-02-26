@@ -2,3 +2,11 @@
 
 {{ network_interfaces }} 
 {{hostvars[inventory_hostname].ansible_hostname}}
+
+{% for hst in  network_interfaces %}
+
+{% if hst==ansible_hostname %}
+ {{ hst.name }}
+{% endif %}
+
+{% endfor %}

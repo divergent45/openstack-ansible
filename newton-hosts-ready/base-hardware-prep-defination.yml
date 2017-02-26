@@ -1,76 +1,77 @@
 #network interface defination for compute6 (Actual Hostname) 
-compute6_network_interfaces: 
- - description: Primary and First physical interface 
-   name: eno1
-   address: 
-   netmask: 
-   broadcast: 
-   gateway: 
-   dns: 
-   part_of_vlan: True
-   parent_name: eno1
-   part_of_bridge: True
-   bridge_description: Bridge for openstack managment network
-   bridge_name: br-mgmt
-   bridge_address: 10.0.0.13
-   bridge_netmask: 255.255.255.0 
-   bridge_broadcast: 10.0.0.255
-   bridge_gateway: 
-   bridge_dns: 
-   
- - description: VLAN10 sitting on First Physical Interface  
-   name: eno1.10
-   address: 
-   netmask:  
-   broadcast: 
-   gateway: 
-   dns: 
-   part_of_vlan: True
-   parent_name: eno1
-   part_of_bridge: True
-   bridge_description: Bridge for Storage Network with VLAN eno1.10 , no iP for Controller
-   bridge_name: br-storage
-   bridge_address: 
-   bridge_netmask:  
-   bridge_broadcast: 
-   bridge_gateway: 
-   bridge_dns:
-    
- - description: Second physical interface 
-   name: eno2   
-   address: 
-   netmask: 
-   broadcast: 
-   gateway: 
-   dns: 
-   part_of_vlan: True
-   parent_name: eno2
-   part_of_bridge: True
-   bridge_description: Bridge for Provider VLAN - for external users to access
-   bridge_name: br-vlan
-   bridge_address: 
-   bridge_netmask: 
-   bridge_broadcast: 
-   bridge_gateway: 
-   bridge_dns:   
- 
- - description: VLAN2.10 sitting on Second Physical Interface 
-   name: eno2.10   
-   address: 
-   netmask: 
-   broadcast: 
-   gateway: 
-   dns: 
-   part_of_vlan: True
-   parent_name: eno2 
-   part_of_bridge: True
-   bridge_description: Bridge for Provider Self Service Network - for external users to access
-   bridge_name: br-vxlan
-   bridge_address: 
-   bridge_netmask: 
-   bridge_broadcast: 
-   bridge_gateway: 
-   bridge_dns:  
+network_interfaces:
+  compute6: 
+     - description: Primary and First physical interface 
+       name: eno1
+       address: 
+       netmask: 
+       broadcast: 
+       gateway: 
+       dns: 
+       part_of_vlan: True
+       parent_name: eno1
+       part_of_bridge: True
+       bridge_description: Bridge for openstack managment network
+       bridge_name: br-mgmt
+       bridge_address: 10.0.0.13
+       bridge_netmask: 255.255.255.0 
+       bridge_broadcast: 10.0.0.255
+       bridge_gateway: 
+       bridge_dns: 
+       
+     - description: VLAN10 sitting on First Physical Interface  
+       name: eno1.10
+       address: 
+       netmask:  
+       broadcast: 
+       gateway: 
+       dns: 
+       part_of_vlan: True
+       parent_name: eno1
+       part_of_bridge: True
+       bridge_description: Bridge for Storage Network with VLAN eno1.10 , no iP for Controller
+       bridge_name: br-storage
+       bridge_address: 
+       bridge_netmask:  
+       bridge_broadcast: 
+       bridge_gateway: 
+       bridge_dns:
+        
+     - description: Second physical interface 
+       name: eno2   
+       address: 
+       netmask: 
+       broadcast: 
+       gateway: 
+       dns: 
+       part_of_vlan: True
+       parent_name: eno2
+       part_of_bridge: True
+       bridge_description: Bridge for Provider VLAN - for external users to access
+       bridge_name: br-vlan
+       bridge_address: 
+       bridge_netmask: 
+       bridge_broadcast: 
+       bridge_gateway: 
+       bridge_dns:   
+     
+     - description: VLAN2.10 sitting on Second Physical Interface 
+       name: eno2.10   
+       address: 
+       netmask: 
+       broadcast: 
+       gateway: 
+       dns: 
+       part_of_vlan: True
+       parent_name: eno2 
+       part_of_bridge: True
+       bridge_description: Bridge for Provider Self Service Network - for external users to access
+       bridge_name: br-vxlan
+       bridge_address: 
+       bridge_netmask: 
+       bridge_broadcast: 
+       bridge_gateway: 
+       bridge_dns:  
 
 
 

@@ -4,8 +4,8 @@
     - base-hardware-prep-defination.yml    
   become: true
   tasks:  
-  - set_fact:
-       network_interfaces: "{{ ansible_hostname }}_network_interfaces"
+  #- set_fact:
+  #     network_interfaces: "{{ ansible_hostname }}_network_interfaces"
   - debug:
       var: network_interfaces
       verbosity: 2
