@@ -1,12 +1,12 @@
 # {{ ansible_managed }}
 
-{{ ansible_hostname }}_{{ network_interfaces }}
+
 # The loopback network interface
 auto lo
 iface lo inet loopback
 
 #############################################################
-{% for pi in ansible_hostname_network_interfaces %}
+{% for pi in network_interfaces %}
 # {{ pi.description }}
 auto {{ pi.name }}
 {% if pi.address %}
