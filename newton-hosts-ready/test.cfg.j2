@@ -4,9 +4,13 @@
 {{hostvars[inventory_hostname].ansible_hostname}}
 
 {% for hst in  network_interfaces %}
-
+{{ hst }}
 {% if hst==ansible_hostname %}
- {{ hst.name }}
+
+{% for pi in hst %}
+ {{ pi.name }}
+ {% endfor %}
+ 
 {% endif %}
 
 {% endfor %}

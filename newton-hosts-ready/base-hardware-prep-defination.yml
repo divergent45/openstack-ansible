@@ -1,6 +1,6 @@
 #network interface defination for compute6 (Actual Hostname) 
 network_interfaces:
-  compute6: 
+  compute4: 
      - description: Primary and First physical interface 
        name: eno1
        address: 
