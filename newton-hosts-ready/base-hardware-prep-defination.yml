@@ -1,13 +1,13 @@
 #haporxy1 settings 
 physical_interfaces: 
- - name: eno1
+ - int_name: eno1
    address: 10.0.0.13
    netmask: 255.255.255.0
    broadcast: 10.0.0.255
    gateway: 
    dns: 
    part_of_vlan: True
- - name: eno2
+ - int_name: eno2
    address: 
    netmask: 
    broadcast: 
