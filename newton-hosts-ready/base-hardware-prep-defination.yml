@@ -17,6 +17,25 @@ network_interfaces:
    bridge_broadcast: 10.0.0.255
    bridge_gateway: 
    bridge_dns: 
+   
+ - description: VLAN10 sitting on First Physical Interface  
+   name: eno1.10
+   address: 
+   netmask:  
+   broadcast: 
+   gateway: 
+   dns: 
+   part_of_vlan: True
+   parent_name: eno1
+   part_of_bridge: True
+   bridge_description: Bridge for Storage Network with VLAN eno1.10 , no iP for Controller
+   bridge_name: br-storage
+   bridge_address: 
+   bridge_netmask:  
+   bridge_broadcast: 
+   bridge_gateway: 
+   bridge_dns:
+    
  - description: Second physical interface 
    name: eno2   
    address: 
@@ -34,24 +53,8 @@ network_interfaces:
    bridge_broadcast: 
    bridge_gateway: 
    bridge_dns:   
- - description: VLAN10 sitting on First Physical Interface  
-   name: eno1.10
-   address: 
-   netmask:  
-   broadcast: 
-   gateway: 
-   dns: 
-   part_of_vlan: True
-   parent_name: eno1
-   part_of_bridge: True
-   bridge_description: Bridge for Storage Network with VLAN eno1.10 , no iP for Controller
-   bridge_name: br-storage
-   bridge_address: 
-   bridge_netmask:  
-   bridge_broadcast: 
-   bridge_gateway: 
-   bridge_dns: 
- - description: VLAN10 sitting on Second Physical Interface 
+ 
+ - description: VLAN2.10 sitting on Second Physical Interface 
    name: eno2.10   
    address: 
    netmask: 
