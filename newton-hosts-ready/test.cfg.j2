@@ -1,14 +1,18 @@
 # {{ ansible_managed }}
 
-{{ network_interfaces }} 
-{{hostvars[inventory_hostname].ansible_hostname}}
+#{{ network_interfaces }} 
+#{{hostvars[inventory_hostname].ansible_hostname}}
 
 {% for hst in  network_interfaces %}
-{{ hst }}
+list of hosts are  {{ hst }}
+ansible hostname {{ ansible_hostname}}
+
 {% if hst==ansible_hostname %}
 
 {% for pi in hst %}
  {{ pi.name }}
+ {{ pi.desription }}
+ {{ pi.address }}
  {% endfor %}
  
 {% endif %}
