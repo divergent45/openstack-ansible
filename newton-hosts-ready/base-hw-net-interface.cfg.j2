@@ -7,6 +7,7 @@ iface lo inet loopback
 
 #############################################################
 {% for pi in network_interfaces %}
+
 # {{ pi.description }}
 auto {{ pi.name }}
 {% if pi.address %}
