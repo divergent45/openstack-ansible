@@ -5,7 +5,7 @@
   become: true
   tasks:
   - debug:
-      var: physical_interfaces
+      var: ansible_hostname
       verbosity: 2
   - name: testing network intreface template
     template:
