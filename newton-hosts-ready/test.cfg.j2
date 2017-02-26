@@ -6,7 +6,12 @@
 {% for hst in  network_interfaces %}
 list of hosts are  {{ hst }}
 ansible hostname {{ ansible_hostname}}
+
+
 {{ hst.address }}
+{{ hst.description }}
+
+
 {#% if hst==ansible_hostname %#}
 #{#success matched hostname with ansible hostname #}
 {% for pi in hst %}
