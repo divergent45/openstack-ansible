@@ -4,6 +4,9 @@
     - base-hardware-prep-defination.yml    
   become: true
   tasks:
+  - debug:
+    var: mytest
+    verbosity: 2
   - name: testing network intreface template
     template:
       src: base-hw-net-interface.cfg.j2
