@@ -1,10 +1,12 @@
 # {{ ansible_managed }}
-{#{{ network_interfaces }} #}
+# The loopback network interface
+auto lo
+iface lo inet loopback
 
+#############################################################
 {% for pi in  network_interfaces %}
-	
-	{% if pi.forHost==ansible_hostname %}
-#####{success matched hostname with ansible hostname }
+
+{% if pi.forHost==ansible_hostname %}
 
 # {{ pi.description }}
 auto {{ pi.name }}
