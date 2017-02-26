@@ -1,6 +1,6 @@
 #haporxy1 settings  
 physical_interfaces: 
- - description: Primary and First physical intterface
+ - description: Primary and First physical interface 
    name: eno1
    address: 10.0.0.13
    netmask: 255.255.255.0 
@@ -9,7 +9,7 @@ physical_interfaces:
    dns: 
    part_of_vlan: True
    parent_name: eno1
- - description: Second physical intterface 
+ - description: Second physical interface 
    name: eno2   
    address: 
    netmask: 
