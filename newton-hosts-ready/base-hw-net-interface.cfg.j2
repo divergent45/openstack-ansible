@@ -7,7 +7,7 @@
 auto lo
 iface lo inet loopback
 
-{% for ifc in {{ physical_interfaces }} %}
+{% for ifc in  physical_interfaces  %}
 
 auto {{ ifc.name }}
 {% if ifc.address %}
