@@ -1,14 +1,12 @@
 # {{ ansible_managed }}
-{{ hostvars[inventory_hostname] }}
-{{ hostvars[inventory_hostname].ansible_hostname }}
-{{ hostvars[inventory_hostname] }}_{{ network_interfaces }}
-{{ ansible_hostname }}
+
+{{ ansible_hostname }}_{{ network_interfaces }}
 # The loopback network interface
 auto lo
 iface lo inet loopback
 
 #############################################################
-{% for pi in network_interfaces %}
+{% for pi in ansible_hostname_network_interfaces %}
 # {{ pi.description }}
 auto {{ pi.name }}
 {% if pi.address %}
