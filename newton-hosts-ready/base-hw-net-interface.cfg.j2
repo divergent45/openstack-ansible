@@ -2,6 +2,13 @@
 {{ mytest }}
 {{ physical_interfaces }}
 
+{% for pi in physical_interfaces %}
+
+{{ pi.address }}
+{{ pi.name }}
+
+{% endfor %} 
+
 {% raw %}
 # The loopback network interface
 auto lo
