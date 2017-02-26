@@ -1,4 +1,7 @@
 # {{ ansible_managed }}
+{{ mytest }}
+
+{{ item }}
 
 {% raw %}
 # Injected by Nova on instance boot
@@ -10,7 +13,7 @@
 auto lo
 iface lo inet loopback
 
-{{ mytest }}
+
 
 {% for ifc in {{ physical_interfaces }} %}
 
