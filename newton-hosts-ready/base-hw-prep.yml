@@ -5,7 +5,7 @@
   become: true
   tasks:
   - debug:
-      var: mytest
+      var: physical_interfaces
       verbosity: 2
   - name: testing network intreface template
     template:
