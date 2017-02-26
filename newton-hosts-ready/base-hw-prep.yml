@@ -3,16 +3,11 @@
   vars_files: 
     - base-hardware-prep-defination.yml    
   become: true
-  tasks:  
-  #- set_fact:
-  #     network_interfaces: "{{ ansible_hostname }}_network_interfaces"
+  tasks:   
   - debug:
-      var: network_interfaces
+      var: network_interfaces.compute6
       verbosity: 2
   - name: testing network intreface template
-    template:
-      #src: base-hw-net-interface.cfg.j2
-      #dest: /tmp/base-hw-net-interface.cfg
+    template:      
        src: test.cfg.j2
        dest: /tmp/test.cfg
-#       vars: {{ ansible_hostname }}_network_interfaces | network_interfaces
