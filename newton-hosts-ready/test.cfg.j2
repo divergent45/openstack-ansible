@@ -8,11 +8,10 @@ list of hosts are  {{ hst }}
 ansible hostname {{ ansible_hostname}}
 
 {% if hst==ansible_hostname %}
-
+success matched hostname with ansible hostname
 {% for pi in hst %}
- {{ pi.name }}
- {{ pi.desription }}
- {{ pi.address }}
+{{ pi }}
+ 
  {% endfor %}
  
 {% endif %}
