@@ -13,7 +13,7 @@ physical_interfaces:
    broadcast: 
    gateway: 
    dns: 
-   part_of_vlan: True
+   part_of_vlan: True 
 
 mytest: bhujay 
 bridge_names:
