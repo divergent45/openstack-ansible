@@ -1,19 +1,13 @@
 # {{ ansible_managed }}
 {{ mytest }}
-
+{{ physical_interfaces }}
+{{ physical_interfaces.name }}
 
 
 #{% raw %}
-# Injected by Nova on instance boot
-#
-# This file describes the network interfaces available on your system
-# and how to activate them. For more information, see interfaces(5).
-
 # The loopback network interface
 auto lo
 iface lo inet loopback
-
-
 
 {% for ifc in {{ physical_interfaces }} %}
 
