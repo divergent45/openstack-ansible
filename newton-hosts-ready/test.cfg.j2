@@ -1,16 +1,18 @@
 # {{ ansible_managed }}
 {#{{ network_interfaces }} #}
 
-{% for hst in  network_interfaces %}
-	list of hosts are  {{ hst }}
+{% for pi in  network_interfaces %}
+	
+	This interface was is meant for host {{ pi.forHost }}
 	ansible hostname {{ ansible_hostname}}
 
-	{#% if hst==ansible_hostname %#}
-	#{#success matched hostname with ansible hostname #}
+	{% if pi.forHost==ansible_hostname %}
+	#{success matched hostname with ansible hostname }
 
-		{% for pi in hst %}
-			{{ pi['description'] }} 
-		{% endfor %}
+		
+			{{ pi.description }}
+			{{ pi.name }}  
+		
  
-	{#% endif %#}
+	{% endif %}
 {% endfor %}

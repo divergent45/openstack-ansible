@@ -1,22 +1,29 @@
 #network interface defination for compute6 (Actual Hostname) 
-network_interfaces:
-  - compute6: 
-     - description: Primary and First physical interface
+network_interfaces:  
+     - forHost: compute6
+       description: Primary and First physical interface
        name: eno1       
-     - description: VLAN10 sitting on First Physical Interface
+     - forHost: compute6
+       description: VLAN10 sitting on First Physical Interface
        name: eno1.10        
-     - description: Second physical interface
+     - forHost: compute6
+       description: Second physical interface
        name: eno2     
-     - description: VLAN2.10 sitting on Second Physical Interface
+     - forHost: compute6
+       description: VLAN2.10 sitting on Second Physical Interface
        name: eno2.10
-  - controller3: 
-     - description: Primary and First physical interface
+   
+     - forHost: controller3
+       description: Primary and First physical interface
        name: eno1       
-     - description: VLAN10 sitting on First Physical Interface
+     - forHost: controller3
+       description: VLAN10 sitting on First Physical Interface
        name: eno1.10        
-     - description: Second physical interface
+     - forHost: controller3
+       description: Second physical interface
        name: eno2     
-     - description: VLAN2.10 sitting on Second Physical Interface
+     - forHost: controller3
+       description: VLAN2.10 sitting on Second Physical Interface
        name: eno2.10
 
 
