@@ -5,7 +5,9 @@
 # The loopback network interface
 auto lo
 iface lo inet loopback
+
 {% for pi in physical_interfaces %}
+# {{ pi.description }}
 auto {{ pi.name }}
 {% if pi.address %}
 iface {{ pi.name }} inet static
@@ -28,36 +30,4 @@ iface {{ pi.name }} inet manual
 {% endfor %} 
 
 #######################################################
-{% raw %}
 
-
-{% for ifc in  physical_interfaces  %}
-
-auto {{ ifc.name }}
-{% if ifc.address %}
-iface {{ ifc.name }} inet static
-    hwaddress ether {{ ifc.hwaddress }}
-    address {{ ifc.address }}
-    netmask {{ ifc.netmask }}
-    broadcast {{ ifc.broadcast }}
-{% if ifc.gateway %}
-    gateway {{ ifc.gateway }}
-{% endif %}
-{% if ifc.dns %}
-    dns-nameservers {{ ifc.dns }}
-{% endif %}
-{% endif %}
-{% if not ifc.address %}
-iface {{ ifc.name }} inet manual
-{% endif %}
-{% if  ifc.part_of_vlan %}
-	vlan-raw-device {{ ifc.parent_name }}
-{% endif %}
-
-{% endfor %}
-
-#{% for ifc in {{ physical_interfaces }} %}
-
-#{% endfor %}
-
-{% endraw %}
