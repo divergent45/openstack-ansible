@@ -9,7 +9,7 @@
 	#{#success matched hostname with ansible hostname #}
 
 		{% for pi in hst %}
-			{{ pi }} 
+			{{ pi['description'] }} 
 		{% endfor %}
  
 	{#% endif %#}
