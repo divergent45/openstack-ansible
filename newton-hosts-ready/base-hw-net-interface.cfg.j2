@@ -2,17 +2,34 @@
 {{ mytest }}
 {{ physical_interfaces }}
 
-{% for pi in physical_interfaces %}
-
-{{ pi.address }}
-{{ pi.name }}
-
-{% endfor %} 
-
-{% raw %}
 # The loopback network interface
 auto lo
 iface lo inet loopback
+{% for pi in physical_interfaces %}
+auto {{ pi.name }}
+{% if pi.address %}
+iface {{ pi.name }} inet static
+	address {{ pi.address }}
+    netmask {{ pi.netmask }}
+    broadcast {{ pi.broadcast }}
+{% if pi.gateway %}
+    gateway {{ pi.gateway }}
+{% endif %}
+{% if pi.dns %}
+    dns-nameservers {{ pi.dns }}
+{% endif %}
+{% endif %}
+{% if not pi.address %}
+iface {{ pi.name }} inet manual
+{% endif %}
+{% if  pi.part_of_vlan %}
+	vlan-raw-device {{ pi.parent_name }}
+{% endif %}
+{% endfor %} 
+
+#######################################################
+{% raw %}
+
 
 {% for ifc in  physical_interfaces  %}
 

@@ -7,13 +7,15 @@ physical_interfaces:
    gateway: 
    dns: 
    part_of_vlan: True
+   parent_name: eno1
  - name: eno2
    address: 
    netmask: 
    broadcast: 
    gateway: 
    dns: 
-   part_of_vlan: True 
+   part_of_vlan: True
+   parent_name: eno2 
 
 mytest: bhujay 
 bridge_names:
