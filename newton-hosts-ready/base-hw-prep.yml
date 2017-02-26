@@ -11,3 +11,5 @@
     template:
       src: base-hw-net-interface.cfg.j2
       dest: /tmp/base-hw-net-interface.cfg
+    vars:
+      mytest: THIS IS written by bhujay
