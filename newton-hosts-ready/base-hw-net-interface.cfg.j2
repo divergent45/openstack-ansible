@@ -4,6 +4,7 @@
 auto lo
 iface lo inet loopback
 
+#############################################################
 {% for pi in physical_interfaces %}
 # {{ pi.description }}
 auto {{ pi.name }}
@@ -26,7 +27,7 @@ iface {{ pi.name }} inet manual
 	vlan-raw-device {{ pi.parent_name }}
 {% endif %}
 
-############################################
+
 {% if pi.part_of_bridge %}
 # {{ pi.bridge_description }}
 auto {{ pi.bridge_name }}
@@ -54,6 +55,7 @@ iface {{ pi.bridge_name }} inet manual
     bridge_ports {{ pi.name }}
 {% endif %}
 {% endif %}
+############################################
 {% endfor %} 
 
 #######################################################
