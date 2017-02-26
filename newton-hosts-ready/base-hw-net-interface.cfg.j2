@@ -27,7 +27,7 @@ iface {{ pi.name }} inet manual
 {% endif %}
 
 ############################################
-{% if part_of_bridge %}
+{% if pi.part_of_bridge %}
 # {{ pi.bridge_description }}
 auto {{ pi.bridge_name }}
 {% if pi.bridge_address %}
