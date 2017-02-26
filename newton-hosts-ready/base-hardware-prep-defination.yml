@@ -1,5 +1,5 @@
-#controller3  settings  
-network_interfaces: 
+#network interface defination for compute6 (Actual Hostname) 
+compute6_network_interfaces: 
  - description: Primary and First physical interface 
    name: eno1
    address: 
