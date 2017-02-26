@@ -2,7 +2,7 @@
 {{ mytest }}
 {{ physical_interfaces }}
 
-#{% raw %}
+{% raw %}
 # The loopback network interface
 auto lo
 iface lo inet loopback
@@ -36,4 +36,4 @@ iface {{ ifc.name }} inet manual
 
 #{% endfor %}
 
-#{% endraw %}
+{% endraw %}
