@@ -20,23 +20,23 @@ network_interfaces:
         bridge_description: Bridge for Self Service Network,bridge_name: br-vxlan,
         bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
         bridge_dns: }   
-# interface for compute4 test host 
-     - {forHost: compute4, description: Primary and First physical interface, name: enp5s0,address: ,netmask: ,broadcast: ,
+# interface for newtonhost1 test host 
+     - {forHost: newtonhost1, description: Primary and First physical interface, name: enp5s0,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for openstack managment network,bridge_name: br-mgmt,
         bridge_address: 10.0.0.34,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.0.255,bridge_gateway: ,
         bridge_dns: }        
-     - {forHost: compute4, description: VLAN10 sitting on First Physical Interface, name: enp5s0.10 ,address: ,netmask: ,broadcast: ,
+     - {forHost: newtonhost1, description: VLAN10 sitting on First Physical Interface, name: enp5s0.10 ,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: enp5s0,part_of_bridge: True,
         bridge_description: Bridge for Storage network,bridge_name: br-storage,
         bridge_address: 10.0.2.34,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.2.255,bridge_gateway: ,
         bridge_dns: }        
-     - {forHost: compute4, description: Second physical interface, name: enp9s0 ,address: ,netmask: ,broadcast: ,
+     - {forHost: newtonhost1, description: Second physical interface, name: enp9s0 ,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for Providers Network,bridge_name: br-vlan,
         bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
         bridge_dns: }          
-     - {forHost: compute4, description: VLAN2.10 sitting on Second Physical Interface, name: enp9s0.10 ,address: ,netmask: ,broadcast: ,
+     - {forHost: newtonhost1, description: VLAN2.10 sitting on Second Physical Interface, name: enp9s0.10 ,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: enp9s0,part_of_bridge: True,
         bridge_description: Bridge for Self Service Network,bridge_name: br-vxlan,
         bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
