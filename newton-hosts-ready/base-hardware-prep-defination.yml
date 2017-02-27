@@ -152,6 +152,8 @@ nfs_share_names:
 nova_compute_server_hostnames:
   - compute4
   - newtonhost1
+servers_to_reboot:
+  - newtonhost1
 #################################################################################
 base_apt_packages:
  - python
@@ -166,8 +168,7 @@ base_apt_packages:
  - sudo 
  - tcpdump 
 #####################################################
-servers_to_reboot:
- - newtonhost1
+
 
 
 
