@@ -161,9 +161,7 @@ base_apt_packages:
  - ifenslave 
  - ifenslave-2.6 
  - lsof 
- - lvm2 
- - ntp 
- - ntpdate 
+ - lvm2  
  - openssh-server 
  - sudo 
  - tcpdump 
