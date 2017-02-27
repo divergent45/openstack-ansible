@@ -1,7 +1,7 @@
 ---
 - name: Enabling IOMMU in the kernel through grub
   lineinfile: 
-    path: /etc/default/grub
+    destfile: /etc/default/grub
     regexp: '^GRUB_CMDLINE_LINUX_DEFAULT='
     line: 'GRUB_CMDLINE_LINUX_DEFAULT="intel_iommu=on"'
     backup: yes
