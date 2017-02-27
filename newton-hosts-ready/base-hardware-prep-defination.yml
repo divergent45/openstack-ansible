@@ -146,10 +146,12 @@ Chrony_clients_uplink_names: |
   server 10.0.0.50
 nfs_server_hostnames: 
   - rsyslog
+  - newtonhost1
 nfs_share_names:
   - /images
 nova_compute_server_hostnames:
   - compute4
+  - newtonhost1
 #################################################################################
 base_apt_packages:
  - python
