@@ -14,7 +14,9 @@
     src: exports.j2
     dest: /etc/exports
     backup: yes
+  register: exportsfilestat
 - name: Restart the NFS service  
   service:
     name: nfs-kernel-server
     state: restarted
+  when: exportsfilestat.changed

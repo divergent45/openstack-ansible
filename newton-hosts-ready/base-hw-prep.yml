@@ -15,6 +15,6 @@
      when: "ansible_hostname in  nova_compute_server_hostnames"
    - role: create-interfaces-bridges
    - role: reboot-servers
-     when: "ansible_hostname in servers_to_reboot"
+    # when: "ansible_hostname in servers_to_reboot"
   
 
