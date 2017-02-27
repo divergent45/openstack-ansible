@@ -1,3 +1,34 @@
+# include the host name in inventory-base-hw-prep and run with -i option as below
+# ansible-playbook base-hw-prep.yml  -i inventory-base-hw-prep
+haproxy_server_hostnames: 
+  - dcim
+  - dcim2
+chrony_master_server_hostnames: 
+  - dcim
+  - dcim2
+Chrony_master_server_uplink_names: |
+  server 0.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
+  server 1.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
+  server 2.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
+  server 3.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
+Chrony_clients_uplink_names: |
+  server 10.0.0.52
+  server 10.0.0.50
+  server 10.0.0.11
+nfs_server_hostnames: 
+  - rsyslog
+  - newtonhost1
+nfs_share_names:
+  - /images
+nova_compute_server_hostnames:
+  - compute4
+  - newtonhost1
+servers_to_reboot:
+  - toavoidnull
+#  - newtonhost1
+#################################################################################
+
+
 #network interface defination for compute6 (Actual Hostname) 
 network_interfaces:  
      - {forHost: compute6, description: Primary and First physical interface, name: eno1,address: ,netmask: ,broadcast: ,
@@ -130,33 +161,7 @@ pip_proxy_entry: |
      
 
 ############################################################## 
-haproxy_server_hostnames: 
-  - dcim
-  - dcim2
-chrony_master_server_hostnames: 
-  - dcim
-  - dcim2
-Chrony_master_server_uplink_names: |
-  server 0.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
-  server 1.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
-  server 2.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
-  server 3.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
-Chrony_clients_uplink_names: |
-  server 10.0.0.52
-  server 10.0.0.50
-  server 10.0.0.11
-nfs_server_hostnames: 
-  - rsyslog
-  - newtonhost1
-nfs_share_names:
-  - /images
-nova_compute_server_hostnames:
-  - compute4
-  - newtonhost1
-servers_to_reboot:
-  - toavoidnull
-#  - newtonhost1
-#################################################################################
+
 base_apt_packages:
  - python
  - bridge-utils
