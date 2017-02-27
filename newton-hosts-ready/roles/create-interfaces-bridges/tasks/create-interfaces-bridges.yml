@@ -17,12 +17,16 @@
   with_items:
     - 8021q
     - bonding
+- name: Also adding 8021.q and bonding modules /etc/modules
+  command: "{{ item }}"
+  with_items:
+   - echo '8021q' >> /etc/modules
+   - echo 'bonding' >> /etc/modules
 - name: Configure the network interfaces and bridges
   template:      
        src: base-hw-network.cfg.j2
        dest: /etc/network/interfaces
        backup: yes
-- name: Restarting networking service ----watch out you may disconnected if configuration is not proper
-  service: 
-    name: networking
-    state: restarted
+- name: Rebooting  the server  ----watch out you may disconnected if configuration is not proper
+  command: reboot 
+    
