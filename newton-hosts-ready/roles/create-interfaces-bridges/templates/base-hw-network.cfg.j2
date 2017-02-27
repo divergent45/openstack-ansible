@@ -3,12 +3,9 @@ source /etc/network/interfaces.d/*
 # The loopback network interface
 auto lo
 iface lo inet loopback
-
 #############################################################
 {% for pi in  network_interfaces %}
-
 {% if pi.forHost==ansible_hostname %}
-
 # {{ pi.description }}
 auto {{ pi.name }}
 {% if pi.address %}
@@ -29,8 +26,7 @@ iface {{ pi.name }} inet manual
 {% if  pi.part_of_vlan %}
 	vlan-raw-device {{ pi.parent_name }}
 {% endif %}
-
-
+#++++++++++++++++++++++++++++++++
 {% if pi.part_of_bridge %}
 # {{ pi.bridge_description }}
 auto {{ pi.bridge_name }}
@@ -59,6 +55,6 @@ iface {{ pi.bridge_name }} inet manual
 {% endif %}
 {% endif %}
 ############################################
-	 
-	{% endif %}
+	 {% endif %}
 {% endfor %}
+### EOF#######
