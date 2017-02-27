@@ -87,5 +87,63 @@ network_interfaces:
         bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
         bridge_dns: } 
 
+############################################################################################
+
+#Proxy and apt configuration 
+
+####################################################################################################
+host_table_entry: |
+        10.0.0.52       dcim
+        10.0.0.50        dcim2
+etc_environment_entry: |
+        export https_proxy="http://dcim:3128"
+        export http_proxy="http://dcim:3128"
+        no_proxy=localhost,127.0.0.1,10.*.*.*,*.poc,dcim,dcim2,gitlab
+apt_proxy_entry: |
+        Acquire::http { Proxy "http://dcim:3128";};
+        Acquire::https { Proxy "http://dcim:3128";};        
+pip_proxy_entry: |
+        [global]
+        proxy = dcim:3128
+     
+
+############################################################## 
+haproxy_server_hostnames: 
+  - dcim
+  - dcim2
+chrony_master_server_hostnames: 
+  - dcim
+  - dcim2
+Chrony_master_server_uplink_names: |
+  server 0.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
+  server 1.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
+  server 2.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
+  server 3.north-america.pool.ntp.org offline maxpoll 10 minpoll 8
+Chrony_clients_uplink_names: |
+  server 10.0.0.52
+  server 10.0.0.50
+nfs_server_hostnames: 
+  - rsyslog
+nfs_share_names:
+  - /images
+nova_compute_server_hostnames:
+  - compute6
+#################################################################################
+base_apt_packages:
+ - python
+ - bridge-utils
+ - vlan 
+ - debootstrap
+ - ifenslave 
+ - ifenslave-2.6 
+ - lsof 
+ - lvm2 
+ - ntp 
+ - ntpdate 
+ - openssh-server 
+ - sudo 
+ - tcpdump 
+
+
 
 

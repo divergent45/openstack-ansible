@@ -1,0 +1,28 @@
+---
+- name: install all apt packages
+  apt: 
+    name: "{{ item }}"
+    state: present
+    allow_unauthenticated: yes
+  with_items:
+   - bridge-utils
+   - vlan 
+   - ifenslave 
+   - ifenslave-2.6    
+   - tcpdump
+- name: Loading the 8021.q and bonding modules
+  modprobe: 
+    name: {{ item }}
+    state: present
+  with_items:
+    - 8021q
+    - bonding
+- name: Configure the network interfaces and bridges
+  template:      
+       src: base-hw-network.cfg.j2
+       dest: /etc/network/interfaces.cfg
+       backup: yes
+- name: Restarting networking service ----watch out you may disconnected if configuration is not proper
+  service: 
+    name: networking
+    state: restarted
