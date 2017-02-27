@@ -15,8 +15,4 @@
      when: "ansible_hostname in {{ nova_compute_server_hostnames }}"
    - role: create-interfaces-bridges
   
-<<<<<<< HEAD
-#test  
-=======
-  
->>>>>>> 891adf84c7fc1384943b86a07e7aca98a29569f9
+
