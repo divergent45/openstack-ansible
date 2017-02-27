@@ -12,7 +12,7 @@
    - tcpdump
 - name: Loading the 8021.q and bonding modules
   modprobe: 
-    name: {{ item }}
+    name: "{{ item }}"
     state: present
   with_items:
     - 8021q
