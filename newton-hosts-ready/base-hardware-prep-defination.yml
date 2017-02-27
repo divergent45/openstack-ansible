@@ -154,6 +154,7 @@ nova_compute_server_hostnames:
   - compute4
   - newtonhost1
 servers_to_reboot:
+  - toavoidnull
 #  - newtonhost1
 #################################################################################
 base_apt_packages:
