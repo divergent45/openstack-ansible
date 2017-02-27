@@ -14,7 +14,7 @@
     src: exports.j2
     dest: /etc/exports
     backup: yes
-- name: Restart the NFS service 
+- name: Restart the NFS service  
   service:
     name: nfs-kernel-server
     state: restarted
