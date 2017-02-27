@@ -6,7 +6,7 @@
   
   roles:
    - role: configure-proxy-apt
-     when: "ansible_hostname not in  {{ haproxy_server_hostnames }}" 
+     when: "ansible_hostname not in  haproxy_server_hostnames" 
    - role: configure-chrony
    - role: install-apt-pkg   
    - role: configure-nfs-server
