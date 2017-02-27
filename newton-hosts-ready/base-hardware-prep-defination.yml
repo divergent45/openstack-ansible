@@ -165,6 +165,9 @@ base_apt_packages:
  - openssh-server 
  - sudo 
  - tcpdump 
+#####################################################
+servers_to_reboot:
+ - newtonhost1
 
 
 
