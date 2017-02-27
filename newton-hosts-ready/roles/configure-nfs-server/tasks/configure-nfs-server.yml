@@ -8,9 +8,7 @@
    name: {{ item }}
    state: directory
    mode: "u+rwx,g+rwx,o+rx"
-#  with_items: {{ nfs_share_names }}
-  with_items: 
-    - {{ nfs_share_names }}
+  with_items: {{ nfs_share_names }}
 - name: Configure the exports for NFS share
   template:
     src: exports.j2
