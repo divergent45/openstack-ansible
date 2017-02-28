@@ -17,7 +17,7 @@
      when: "ansible_hostname in network_interface_build_needed_for_servers"
    #- role: reboot-servers # why this role didn't work
     # when: "ansible_hostname in servers_to_reboot" 
-  tasks: 
+  tasks:  
 #  - name: Rebooting  the server  ----watch out you may disconnected if configuration is not proper
 #    shell: sleep 2 && shutdown -r now
 #    async: 1
