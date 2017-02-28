@@ -1,5 +1,9 @@
 # include the host name in inventory-base-hw-prep and run with -i option as below
 # ansible-playbook base-hw-prep.yml  -i inventory-base-hw-prep
+network_interface_build_needed_for_servers:
+  - firstlinetoavoidnull
+  - newtonhost1
+
 haproxy_server_hostnames: 
   - dcim
   - dcim2
