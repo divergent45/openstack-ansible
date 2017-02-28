@@ -25,8 +25,8 @@
     ignore_errors: true
     when: "ansible_hostname in servers_to_reboot"
   - name: waiting for server to come back after reboot
-    local_action: wait_for host={{ ansible_ssh_host }} state=started port=22 delay=30 timeout=300 connect_timeout=15 retries=50
-#    retries: 50
+    local_action: wait_for host={{ ansible_ssh_host }} state=started port=22 delay=30 timeout=3000 
+    retries: 50
 #  - name: 'Waiting OS boot and SSH readiness'
 #    local_action:
 #    wait_for: 
