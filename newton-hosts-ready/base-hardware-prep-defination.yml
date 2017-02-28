@@ -3,6 +3,7 @@
 network_interface_build_needed_for_servers:
   - firstlinetoavoidnull
   - newtonhost1
+  - newton-kvm1
 
 haproxy_server_hostnames: 
   - dcim
