@@ -29,11 +29,11 @@
 #    retries: 50
   - name: 'Waiting OS boot and SSH readiness'
     local_action:
-      wait_for: 
-           port: 22        
-           host: "{{ ansible_ssh_host }}"
-           delay: 1
-           timeout: 3000
-      delay: 30
-      retries: 50
+    wait_for: 
+         port: 22        
+         host: "{{ ansible_ssh_host }}"
+         delay: 1
+         timeout: 3000
+    delay: 30
+    retries: 50
 
