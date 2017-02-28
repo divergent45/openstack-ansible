@@ -75,7 +75,7 @@ network_interfaces:
      - {forHost: newton-kvm1, description: VLAN2.10 sitting on Second Physical Interface, name: eno2.10 ,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for Self Service Network,bridge_name: br-vxlan,
-        bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
+        bridge_address: 10.0.1.32,bridge_netmask: 255.255.255.0,bridge_broadcast: ,bridge_gateway: ,
         bridge_dns: }      
    
         
