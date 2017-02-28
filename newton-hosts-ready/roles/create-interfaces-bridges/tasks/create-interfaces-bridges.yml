@@ -28,5 +28,5 @@
        dest: /etc/network/interfaces.test
        backup: yes
   with_items: "{{ network_interfaces }}"
-  when: "if item.forHost==ansible_host"
+  when: "item.forHost==ansible_host"
     
