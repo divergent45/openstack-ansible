@@ -25,7 +25,7 @@
 - name: Configure the network interfaces and bridges
   template:      
        src: base-hw-network.cfg.j2
-       dest: /etc/network/interfaces
+       dest: /etc/network/interfaces.test
        backup: yes
   with_items: "{{ network_interfaces }}"
   when: "item.forHost==ansible_host"
