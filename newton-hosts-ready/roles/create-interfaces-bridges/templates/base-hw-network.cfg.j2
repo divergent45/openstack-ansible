@@ -38,7 +38,9 @@ iface {{ item.bridge_name }} inet static
     bridge_ports {{ item.name }}
 	address {{ item.bridge_address }}
     netmask {{ item.bridge_netmask }}
+{% if item.bridge_broadcast %}
     broadcast {{ item.bridge_broadcast }}
+{% endif %}      
 {% if item.bridge_gateway %}
     gateway {{ item.bridge_gateway }}
 {% endif %}
