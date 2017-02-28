@@ -1,2 +1,3 @@
 [base_hw_prep_for_openstack]
-newtonhost1
+#newtonhost1
+newton-kvm1
