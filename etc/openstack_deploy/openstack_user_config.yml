@@ -233,6 +233,8 @@ compute_hosts:
     ip: 10.0.0.35
   compute4:  
     ip: 10.0.0.36
+  newton-kvm1:
+    ip: 10.0.0.32   
 # ceilometer compute agent (telemetry)
 metering-compute_hosts:
   compute1:
@@ -243,6 +245,8 @@ metering-compute_hosts:
     ip: 10.0.0.35
   compute4:  
     ip: 10.0.0.36
+  newton-kvm1:
+    ip: 10.0.0.32    
 # cinder storage host (LVM-backed)
 #storage_hosts:
 #  storage1:
