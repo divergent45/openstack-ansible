@@ -27,7 +27,6 @@
        src: base-hw-network.cfg.j2
        dest: /etc/network/interfaces.test
        backup: yes
-  when: 
-    - "for n in network_interfaces"
-    - "if n.forHost==ansible_host"
+  with_items: {{ network_interfaces }}
+  when: "if item.forHost==ansible_host"
     
