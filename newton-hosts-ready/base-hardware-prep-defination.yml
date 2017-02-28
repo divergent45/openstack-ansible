@@ -22,10 +22,10 @@ nfs_share_names:
   - /images
 nova_compute_server_hostnames:
   - compute4
-  - compute1
+  - newton-kvm1
 servers_to_reboot:
   - toavoidnull
-  - compute1
+  - newton-kvm1
 #################################################################################
 
 
@@ -52,22 +52,22 @@ network_interfaces:
         bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
         bridge_dns: }   
 ###  For Compute1 Dell Blade - 03    
-     - {forHost: compute1, description: Primary and First physical interface, name: eno1,address: ,netmask: ,broadcast: ,
+     - {forHost: newton-kvm1, description: Primary and First physical interface, name: eno1,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for openstack managment network,bridge_name: br-mgmt,
         bridge_address: 10.0.0.32,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.0.255,bridge_gateway: ,
         bridge_dns: }        
-     - {forHost: compute1, description: VLAN10 sitting on First Physical Interface, name: eno1.10 ,address: ,netmask: ,broadcast: ,
+     - {forHost: newton-kvm1, description: VLAN10 sitting on First Physical Interface, name: eno1.10 ,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for Storage network,bridge_name: br-storage,
         bridge_address: 10.0.2.32,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.2.255,bridge_gateway: ,
         bridge_dns: }        
-     - {forHost: compute1, description: Second physical interface, name: eno2 ,address: ,netmask: ,broadcast: ,
+     - {forHost: newton-kvm1, description: Second physical interface, name: eno2 ,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for Providers Network,bridge_name: br-vlan,
         bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
         bridge_dns: }          
-     - {forHost: compute1, description: VLAN2.10 sitting on Second Physical Interface, name: eno2.10 ,address: ,netmask: ,broadcast: ,
+     - {forHost: newton-kvm1, description: VLAN2.10 sitting on Second Physical Interface, name: eno2.10 ,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for Self Service Network,bridge_name: br-vxlan,
         bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
