@@ -16,7 +16,7 @@
    - role: create-interfaces-bridges
      when: "ansible_hostname in network_interface_build_needed_for_servers"
    #- role: reboot-servers # why this role didn't work
-    # when: "ansible_hostname in servers_to_reboot"
+    # when: "ansible_hostname in servers_to_reboot" 
 #  tasks: 
 #  - name: Rebooting  the server  ----watch out you may disconnected if configuration is not proper
 #    shell: sleep 2 && shutdown -r now
