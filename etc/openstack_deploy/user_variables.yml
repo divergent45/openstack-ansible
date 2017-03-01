@@ -40,6 +40,16 @@ haproxy_keepalived_internal_vip_cidr: 10.0.0.14/24
 haproxy_keepalived_external_interface: br-internet
 haproxy_keepalived_internal_interface: br-mgmt
 keepalived_ping_address: "10.0.0.53"
+
+ceph_mons:
+   - 10.0.0.70
+#   - 10.16.5.41
+#   - 10.16.5.42
+## Common Nova Overrides
+# When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
+# hosts.
+nova_libvirt_images_rbd_pool: vms
+
 ##Most often, overrides are implemented 
 ##for the <service>.conf files (for example, nova.conf). These files use a standard INI file format.
 ##
