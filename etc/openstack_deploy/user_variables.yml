@@ -42,9 +42,9 @@ haproxy_keepalived_internal_interface: br-mgmt
 keepalived_ping_address: "10.0.0.53"
 
 ceph_mons:
-   - 10.0.0.70
-#   - 10.16.5.41
-#   - 10.16.5.42
+   - 10.0.2.81
+   - 10.0.2.82
+   - 10.0.2.83
 ## Common Nova Overrides
 # When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
 # hosts.
