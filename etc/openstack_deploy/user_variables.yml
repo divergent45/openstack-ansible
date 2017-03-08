@@ -41,6 +41,7 @@ haproxy_keepalived_external_interface: br-internet
 haproxy_keepalived_internal_interface: br-mgmt
 keepalived_ping_address: "10.0.0.53"
 
+cephx: true
 ceph_mons:
    - 10.0.2.81
    - 10.0.2.82
