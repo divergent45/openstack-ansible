@@ -33,7 +33,12 @@ pip_validate_certs: false
 galera_package_download_validate_certs: false
 
 
-glance_default_store: file
+glance_default_store: rbd
+# glance_default_store: file
+
+## Ceph pool name for Glance to use
+glance_rbd_store_pool: images
+glance_rbd_store_chunk_size: 8
 
 haproxy_keepalived_external_vip_cidr: 14.142.104.140/29
 haproxy_keepalived_internal_vip_cidr: 10.0.0.14/24
