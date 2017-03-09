@@ -43,7 +43,7 @@ global_overrides:
         container_type: "veth"
         container_interface: "eth12"
         #host_bind_override: "eth12" #?????? this ovverrides is trying to search eth2 on compute node 
-        #host_bind_override: eno2
+        host_bind_override: eno2
         type: "flat"
         net_name: "flat"
         group_binds:
@@ -225,10 +225,10 @@ metrics_hosts:
 
 # nova hypervisors
 compute_hosts:
-  compute1:
-    ip: 10.0.0.33
-  compute2:
-    ip: 10.0.0.34
+#  compute1:
+#    ip: 10.0.0.33
+#  compute2:
+#    ip: 10.0.0.34
   compute3:
     ip: 10.0.0.35
   compute4:  
@@ -237,17 +237,17 @@ compute_hosts:
     ip: 10.0.0.32   
 # ceilometer compute agent (telemetry)
 metering-compute_hosts:
-  compute1:
-    ip: 10.0.0.33
-  compute2:
-    ip: 10.0.0.34
+#  compute1:
+#    ip: 10.0.0.33
+#  compute2:
+#    ip: 10.0.0.34
   compute3:
     ip: 10.0.0.35
   compute4:  
     ip: 10.0.0.36
   newton-kvm1:
     ip: 10.0.0.32    
-# cinder storage host (LVM-backed)
+# cinder storage host (ceph-backed)
 storage_hosts:
  infra1:
   ip: 10.0.0.13
