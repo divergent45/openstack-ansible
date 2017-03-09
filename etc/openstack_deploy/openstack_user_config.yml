@@ -225,10 +225,10 @@ metrics_hosts:
 
 # nova hypervisors
 compute_hosts:
-#  compute1:
-#    ip: 10.0.0.33
-#  compute2:
-#    ip: 10.0.0.34
+  compute1:
+    ip: 10.0.0.33
+  compute2:
+    ip: 10.0.0.34
   compute3:
     ip: 10.0.0.35
   compute4:  
@@ -237,10 +237,10 @@ compute_hosts:
     ip: 10.0.0.32   
 # ceilometer compute agent (telemetry)
 metering-compute_hosts:
-#  compute1:
-#    ip: 10.0.0.33
-#  compute2:
-#    ip: 10.0.0.34
+  compute1:
+    ip: 10.0.0.33
+  compute2:
+    ip: 10.0.0.34
   compute3:
     ip: 10.0.0.35
   compute4:  
