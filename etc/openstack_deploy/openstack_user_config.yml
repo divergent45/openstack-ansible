@@ -281,7 +281,7 @@ storage_hosts:
      rbd:
        volume_group: cinder-volumes
        volume_driver: cinder.volume.drivers.rbd.RBDDriver
-       volume_backend_name: rbd
+       volume_backend_name: ceph
        rbd_pool: volumes
        rbd_ceph_conf: /etc/ceph/ceph.conf
        rbd_user: cinder
