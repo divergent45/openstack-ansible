@@ -259,8 +259,8 @@ ceph-mon_hosts:
 
 # The nodes that the Ceph OSD disks will be running on
 ceph-osd_hosts:
-  osd5:
-    ip: 10.0.0.85
+  aio1:
+    ip: 172.29.236.100
 # cinder storage host (ceph-backed)
 storage_hosts:
  infra1:
