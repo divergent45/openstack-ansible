@@ -639,8 +639,9 @@ ceph_release_num:
 # generated, you may find it useful to disable fsid generation to
 # avoid cluttering up your ansible repo. If you set `generate_fsid` to
 # false, you *must* generate `fsid` in another way.
+fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
 #fsid: "{{ cluster_uuid.stdout }}"
-#generate_fsid: true
+generate_fsid: false
 
 #cephx: true
 #max_open_files: 131072
@@ -870,6 +871,7 @@ dummy:
 
 # ACTIVATE BOTH FSID AND MONITOR_SECRET VARIABLES FOR NON-VAGRANT DEPLOYMENT
 #fsid: "{{ cluster_uuid.stdout }}"
+fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
 #monitor_secret: "{{ monitor_keyring.stdout }}"
 #cephx: true
 
@@ -1014,6 +1016,7 @@ dummy:
 
 # ACTIVATE THE FSID VARIABLE FOR NON-VAGRANT DEPLOYMENT
 #fsid: "{{ cluster_uuid.stdout }}"
+fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
 #cephx: true
 
 # Devices to be used as OSDs
