@@ -1,7 +1,0 @@
----
-
-
-container_skel:
-  ceph_osd_container:
-    properties:
-      is_metal: true
