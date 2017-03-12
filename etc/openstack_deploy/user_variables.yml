@@ -153,8 +153,8 @@ ceph_conf_file: |
   [global]
   fsid = d840564a-c2c1-4aa0-bae5-ea7ddf070edc
   max open files = 131072
-  mon initial members = infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
-  mon host = 10.0.2.138,10.0.2.143,10.0.2.230
+  mon initial members = ceph2,infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
+  mon host = 10.0.0.82,10.0.2.138,10.0.2.143,10.0.2.230
   public network = 10.0.2.0/24
   cluster network = 11.0.0.0/24
 
@@ -162,8 +162,8 @@ ceph_conf_overrides:
    global:
      fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
      max open files: 131072
-     mon initial members: infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
-     mon host: 10.0.2.138,10.0.2.143,10.0.2.230
+     mon initial members: ceph2,infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
+     mon host: 10.0.0.82,10.0.2.138,10.0.2.143,10.0.2.230
      public network: 10.0.2.0/24
      cluster network: 11.0.0.0/24
 #     bar: 5678
