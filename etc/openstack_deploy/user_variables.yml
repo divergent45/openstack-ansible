@@ -461,7 +461,7 @@ dummy:
 # GENERAL #
 ###########
 
-#fetch_directory: fetch/
+fetch_directory: fetch/
 
 # The 'cluster' variable determines the name of the cluster.
 # Changing the default value to something else means that you will
@@ -883,7 +883,7 @@ dummy:
 # GENERAL #
 ###########
 
-#fetch_directory: fetch/
+fetch_directory: fetch/
 
 #mon_group_name: mons
 
@@ -1011,7 +1011,7 @@ dummy:
 # GENERAL #
 ###########
 
-#fetch_directory: fetch/
+fetch_directory: fetch/
 
 # Even though OSD nodes should not have the admin key
 # at their disposal, some people might want to have it
