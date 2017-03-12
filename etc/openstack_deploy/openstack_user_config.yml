@@ -262,7 +262,7 @@ ceph-osd_hosts:
   aio1:
     ip: 172.29.236.100
   osd1:
-    ip: 10.0.0.81
+    ip: 10.0.0.84
   osd5:
     ip: 10.0.0.85
 # cinder storage host (ceph-backed)
