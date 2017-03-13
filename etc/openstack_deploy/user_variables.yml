@@ -41,9 +41,9 @@ galera_package_download_validate_certs: false
 
 cephx: true
 ceph_mons:
-   - 10.0.2.138
-   - 10.0.2.143
-   - 10.0.2.230   
+   - 10.0.2.81
+   - 10.0.2.82
+   - 10.0.2.83   
 
 # When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
 # hosts.
@@ -60,135 +60,6 @@ cinder_service_backup_program_enabled: True
 cinder_service_backup_driver: cinder.backup.drivers.ceph
 cinder_service_backup_ceph_user: cinder-backup
 cinder_service_backup_ceph_pool: backups
-
-
-
-#ceph mon installation related config +++++++++++++++++
-   
-#ceph_conf_overrides:
-#   global:
-#     fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
-#     max open files: 131072
-#     mon initial members: ceph2,infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
-#     mon host: 10.0.0.82,10.0.2.138,10.0.2.143,10.0.2.230
-#     public network: 10.0.2.0/24
-#     cluster network: 11.0.0.0/24
-#     auth_cluster_required: cephx
-#     auth_service_required: cephx
-
-fetch_directory: fetch/
-upgrade_ceph_packages: True
-debian_package_dependencies:
-  - python-pycurl
-  - hdparm
-  - chrony
-
-ntp_service_enabled: false
-debian_ceph_packages:
-  - ceph
-  - ceph-common    #|--> yes, they are already all dependencies from 'ceph'
-#  - ceph-fs-common #|--> dont install for kraken,  however while proceding to rolling upgrades and the 'ceph' package upgrade
-  - ceph-fuse      #|--> they don't get update so we need to force them
-
-ceph_origin: 'upstream' # or 'distro' or 'local'
-# COMMUNITY VERSION
-ceph_stable: true # use ceph stable branch
-
-ceph_stable_release: kraken  # ceph stable release
-
-ceph_release_num:
-#  dumpling: 0.67
-#  emperor: 0.72
-#  firefly: 0.80
-#  giant: 0.87
-  hammer: 0.94
-#  infernalis: 9
-#  jewel: 10
-  kraken: 11.2.0
-
-
-#fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
-#fsid: "{{ cluster_uuid.stdout }}"
-generate_fsid: true
-
-#cephx: true
-max_open_files: 131072
-
-
-## Monitor options
-#
-# You must define either monitor_interface or monitor_address. Preference # will go to monitor_interface if both are defined.
-monitor_interface: br-storage
-monitor_address: 10.0.2.0/24
-# set to either ipv4 or ipv6, whichever your network is using
-#ip_version: ipv4
-#mon_use_fqdn: false # if set to true, the MON name used will be the fqdn in the ceph.conf
-#monitor_address_block: false
-
-## OSD options
-#
-journal_size: 5120 # OSD journal size in MB
-public_network: 10.0.2.0/24
-cluster_network: 11.0.0.0/24
-osd_mkfs_type: xfs
-
-radosgw_civetweb_bind_ip: 10.0.0.81
-dummy:
-
-
-openstack_config: true
-openstack_glance_pool:
-  name: images
-  pg_num: "{{ osd_pool_default_pg_num }}"
-openstack_cinder_pool:
-  name: volumes
-  pg_num: "{{ osd_pool_default_pg_num }}"
-openstack_nova_pool:
-  name: vms
-  pg_num: "{{ osd_pool_default_pg_num }}"
-openstack_cinder_backup_pool:
-  name: backups
-  pg_num: "{{ osd_pool_default_pg_num }}"
-
-openstack_pools:
-  - "{{ openstack_glance_pool }}"
-  - "{{ openstack_cinder_pool }}"
-  - "{{ openstack_nova_pool }}"
-  - "{{ openstack_cinder_backup_pool }}"
-
-openstack_keys:
-  - { name: client.glance, value: "mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ openstack_glance_pool.name }}'" }
-  - { name: client.cinder, value: "mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ openstack_cinder_pool.name }}, allow rwx pool={{ openstack_nova_pool.name }}, allow rx pool={{ openstack_glance_pool.name }}'"  }
-  - { name: client.cinder-backup, value: "mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ openstack_cinder_backup_pool.name }}'" }
-
-#=================================================================================================
-# By default, Ceph makes 3 replicas of objects. If you want to make four   # copies of an object the default value--a primary copy and three replica 
-  # copies--reset the default values as shown in 'osd pool default size'.  # If you want to allow Ceph to write a lesser number of copies in a degraded 
-  # state, set 'osd pool default min size' to a number less than the
-  # 'osd pool default size' value.
-
-osd_pool_default_size: 5  # Write an object 5 times.
-osd_pool_default_min_size: 2 # Allow writing one copy in a degraded state.
-
-  # Ensure you have a realistic number of placement groups. We recommend   # approximately 100 per OSD. E.g., total number of OSDs multiplied by 100 
-  # divided by the number of replicas (i.e., osd pool default size). So for   # 10 OSDs and osd pool default size = 4, we'd recommend approximately
-  # (100 * 10) / 4 = 250.
-
-osd_pool_default_pg_num: 250
-osd_pool_default_pgp_num: 250
-
-
-# Devices to be used as OSDs # You can pre-provision disks that are not present yet.# Ansible will just skip them. Newly added disk will be
-# automatically configured during the next run. # Declare devices to be used as OSDs # All scenario(except 3rd) inherit from the following device declaration
-
-devices:
-  - /dev/sdb
-#  - /dev/sdc
-#  - /dev/sdd
-#  - /dev/sde
-
-journal_collocation: true
-
 
 
 
