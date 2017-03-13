@@ -1,6 +1,6 @@
 ---
 ## Debug and Verbose options.
-debug: true
+debug: false
 
 proxy_env_url: http://dcim:3128/
 # no_proxy_env: "localhost,127.0.0.1,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
@@ -56,10 +56,9 @@ cephx: true
 ceph_mons:
    - 10.0.2.138
    - 10.0.2.143
-   - 10.0.2.230
-   - 10.0.2.81
+   - 10.0.2.230   
    - 10.0.2.82
-   - 10.0.2.83
+   
 ## Common Nova Overrides
 # When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
 # hosts.
@@ -149,14 +148,14 @@ nova_libvirt_images_rbd_pool: vms
 #  # mon_host = {{ ceph_mons|join(',') }}
 #  auth_cluster_required = cephx
 #  auth_service_required = cephx
-ceph_conf_file: |
-  [global]
-  fsid = d840564a-c2c1-4aa0-bae5-ea7ddf070edc
-  max open files = 131072
-  mon initial members = ceph2,infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
-  mon host = 10.0.0.82,10.0.2.138,10.0.2.143,10.0.2.230
-  public network = 10.0.2.0/24
-  cluster network = 11.0.0.0/24
+#ceph_conf_file: |
+#  [global]
+#  fsid = d840564a-c2c1-4aa0-bae5-ea7ddf070edc
+#  max open files = 131072
+#  mon initial members = ceph2,infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
+#  mon host = 10.0.0.82,10.0.2.138,10.0.2.143,10.0.2.230
+#  public network = 10.0.2.0/24
+#  cluster network = 11.0.0.0/24
 
 ceph_conf_overrides:
    global:
