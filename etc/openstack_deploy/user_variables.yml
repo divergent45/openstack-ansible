@@ -102,8 +102,8 @@ ceph_release_num:
 #  firefly: 0.80
 #  giant: 0.87
   hammer: 0.94
-  infernalis: 9
-  jewel: 10
+#  infernalis: 9
+#  jewel: 10
   kraken: 11.2.0
 
 
