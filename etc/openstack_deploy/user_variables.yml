@@ -14,8 +14,7 @@ global_environment_variables:
    https_proxy: "{{ proxy_env_url }}"
    no_proxy: "{{ no_proxy_env }}"
 ## SSH connection wait time
-# If an increased delay for the ssh connection check is desired,
-# uncomment this variable and set it appropriately.   
+# If an increased delay for the ssh connection check is desired,# uncomment this variable and set it appropriately.   
 ssh_delay: 15
 #++++++++++++++++++Must for Self signed Certificate++++++++++++++++
 keystone_service_adminuri_insecure: true
@@ -24,7 +23,11 @@ keystone_service_internaluri_insecure: true
 #++++++++++++++++++++++++++++++++++++++
 haproxy_ssl_self_signed_regen: true
 haproxy_ssl_self_signed_subject: "/C=IN/ST=Karnataka/L=Bangalore/O=ITC/CN=cloudspace.itc.in"
-
+haproxy_keepalived_external_vip_cidr: 14.142.104.140/29
+haproxy_keepalived_internal_vip_cidr: 10.0.0.14/24
+haproxy_keepalived_external_interface: br-internet
+haproxy_keepalived_internal_interface: br-mgmt
+keepalived_ping_address: "10.0.0.53"
 
 #+++++++++++++++++Proxying TLS traffic often interferes with the clients ability to perform 
 #successful validation of the certificate chain.Additional variables may exist
@@ -32,6 +35,19 @@ haproxy_ssl_self_signed_subject: "/C=IN/ST=Karnataka/L=Bangalore/O=ITC/CN=clouds
 pip_validate_certs: false
 galera_package_download_validate_certs: false
 
+# this is a place holder for nova config-drive , we will test it later
+
+# configuration for nova, glance and cinder backup with ceph rbd as backend . Cinder volume config is in openstack_user_config
+
+cephx: true
+ceph_mons:
+   - 10.0.2.138
+   - 10.0.2.143
+   - 10.0.2.230   
+
+# When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
+# hosts.
+nova_libvirt_images_rbd_pool: vms
 
 glance_default_store: rbd
 # glance_default_store: file
@@ -46,534 +62,40 @@ cinder_service_backup_ceph_user: cinder-backup
 cinder_service_backup_ceph_pool: backups
 
 
-haproxy_keepalived_external_vip_cidr: 14.142.104.140/29
-haproxy_keepalived_internal_vip_cidr: 10.0.0.14/24
-haproxy_keepalived_external_interface: br-internet
-haproxy_keepalived_internal_interface: br-mgmt
-keepalived_ping_address: "10.0.0.53"
 
-cephx: true
-ceph_mons:
-   - 10.0.2.138
-   - 10.0.2.143
-   - 10.0.2.230   
-   - 10.0.2.82
+#ceph mon installation related config +++++++++++++++++
    
-## Common Nova Overrides
-# When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
-# hosts.
-nova_libvirt_images_rbd_pool: vms
-
-##Most often, overrides are implemented 
-##for the <service>.conf files (for example, nova.conf). These files use a standard INI file format.
-##
-#
-#nova_nova_conf_overrides:
-#  DEFAULT:
-#    remove_unused_original_minimum_age_seconds: 43200
-#  libvirt:
-#    cpu_mode: host-model
-#    disk_cachemodes: file=directsync,block=none
-#  database:
-#    idle_timeout: 300
-#    max_pool_size: 10
-
-
-
-
-## Common Glance Overrides
-# Set glance_default_store to "swift" if using Cloud Files backend
-# or "rbd" if using ceph backend; the latter will trigger ceph to get
-# installed on glance. If using a file store, a shared file store is
-# recommended. See the OpenStack-Ansible install guide and the OpenStack
-# documentation for more details.
-# Note that "swift" is automatically set as the default back-end if there
-# are any swift hosts in the environment. Use this setting to override
-# this automation if you wish for a different default back-end.
-# glance_default_store: file
-
-## Ceph pool name for Glance to use
-# glance_rbd_store_pool: images
-# glance_rbd_store_chunk_size: 8
-
-
-
-
-
-
-## Common Nova Overrides
-# When nova_libvirt_images_rbd_pool is defined, ceph will be installed on nova
-# hosts.
-# nova_libvirt_images_rbd_pool: vms
-
-# If you wish to change the dhcp_domain configured for both nova and neutron
-# dhcp_domain: openstacklocal
-
-## Common Glance Overrides when using a Swift back-end
-# By default when 'glance_default_store' is set to 'swift' the playbooks will
-# expect to use the Swift back-end that is configured in the same inventory.
-# If the Swift back-end is not in the same inventory (ie it is already setup
-# through some other means) then these settings should be used.
-#
-# NOTE: Ensure that the auth version matches your authentication endpoint.
-#
-# NOTE: If the password for glance_swift_store_key contains a dollar sign ($),
-# it must be escaped with an additional dollar sign ($$), not a backslash. For
-# example, a password of "super$ecure" would need to be entered as
-# "super$$ecure" below.  See Launchpad Bug #1259729 for more details.
-#
-# glance_swift_store_auth_version: 3
-# glance_swift_store_auth_address: "https://some.auth.url.com"
-# glance_swift_store_user: "OPENSTACK_TENANT_ID:OPENSTACK_USER_NAME"
-# glance_swift_store_key: "OPENSTACK_USER_PASSWORD"
-# glance_swift_store_container: "NAME_OF_SWIFT_CONTAINER"
-# glance_swift_store_region: "NAME_OF_REGION"
-
-## Common Ceph Overrides
-# ceph_mons:
-#   - 10.16.5.40
-#   - 10.16.5.41
-#   - 10.16.5.42
-
-## Custom Ceph Configuration File (ceph.conf)
-# By default, your deployment host will connect to one of the mons defined above to
-# obtain a copy of your cluster's ceph.conf.  If you prefer, uncomment ceph_conf_file
-# and customise to avoid ceph.conf being copied from a mon.
-#ceph_conf_file: |
-#  [global]
-#  fsid = 00000000-1111-2222-3333-444444444444
-#  mon_initial_members = mon1.example.local,mon2.example.local,mon3.example.local
-#  mon_host = 10.16.5.40,10.16.5.41,10.16.5.42
-#  # optionally, you can use this construct to avoid defining this list twice:
-#  # mon_host = {{ ceph_mons|join(',') }}
-#  auth_cluster_required = cephx
-#  auth_service_required = cephx
-#ceph_conf_file: |
-#  [global]
-#  fsid = d840564a-c2c1-4aa0-bae5-ea7ddf070edc
-#  max open files = 131072
-#  mon initial members = ceph2,infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
-#  mon host = 10.0.0.82,10.0.2.138,10.0.2.143,10.0.2.230
-#  public network = 10.0.2.0/24
-#  cluster network = 11.0.0.0/24
-
-ceph_conf_overrides:
-   global:
-     fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
-     max open files: 131072
-     mon initial members: ceph2,infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
-     mon host: 10.0.0.82,10.0.2.138,10.0.2.143,10.0.2.230
-     public network: 10.0.2.0/24
-     cluster network: 11.0.0.0/24
-#     bar: 5678
-
-# By default, openstack-ansible configures all OpenStack services to talk to
-# RabbitMQ over encrypted connections on port 5671. To opt-out of this default,
-# set the rabbitmq_use_ssl variable to 'false'. The default setting of 'true'
-# is highly recommended for securing the contents of RabbitMQ messages.
-# rabbitmq_use_ssl: false
-
-# RabbitMQ management plugin is enabled by default, the guest user has been
-# removed for security reasons and a new userid 'monitoring' has been created
-# with the 'monitoring' user tag. In order to modify the userid, uncomment the
-# following and change 'monitoring' to your userid of choice.
-# rabbitmq_monitoring_userid: monitoring
-
-
-## Additional pinning generator that will allow for more packages to be pinned as you see fit.
-## All pins allow for package and versions to be defined. Be careful using this as versions
-## are always subject to change and updates regarding security will become your problem from this
-## point on. Pinning can be done based on a package version, release, or origin. Use "*" in the
-## package name to indicate that you want to pin all package to a particular constraint.
-# apt_pinned_packages:
-#   - { package: "lxc", version: "1.0.7-0ubuntu0.1" }
-#   - { package: "libvirt-bin", version: "1.2.2-0ubuntu13.1.9" }
-#   - { package: "rabbitmq-server", origin: "www.rabbitmq.com" }
-#   - { package: "*", release: "MariaDB" }
-
-
-## Environment variable settings
-# This allows users to specify the additional environment variables to be set
-# which is useful in setting where you working behind a proxy. If working behind
-# a proxy It's important to always specify the scheme as "http://". This is what
-# the underlying python libraries will handle best. This proxy information will be
-# placed both on the hosts and inside the containers.
-
-## Example environment variable setup:
-# proxy_env_url: http://username:pa$$w0rd@10.10.10.9:9000/
-# no_proxy_env: "localhost,127.0.0.1,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
-# global_environment_variables:
-#   HTTP_PROXY: "{{ proxy_env_url }}"
-#   HTTPS_PROXY: "{{ proxy_env_url }}"
-#   NO_PROXY: "{{ no_proxy_env }}"
-#   http_proxy: "{{ proxy_env_url }}"
-#   https_proxy: "{{ proxy_env_url }}"
-#   no_proxy: "{{ no_proxy_env }}"
-
-
-
-
-## HAProxy
-# Uncomment this to disable keepalived installation (cf. documentation)
-# haproxy_use_keepalived: False
-#
-# HAProxy Keepalived configuration (cf. documentation)
-# Make sure that this is set correctly according to the CIDR used for your
-# internal and external addresses.
-# haproxy_keepalived_external_vip_cidr: "{{external_lb_vip_address}}/32"
-# haproxy_keepalived_internal_vip_cidr: "{{internal_lb_vip_address}}/32"
-# haproxy_keepalived_external_interface:
-# haproxy_keepalived_internal_interface:
-
-# Defines the default VRRP id used for keepalived with haproxy.
-# Overwrite it to your value to make sure you don't overlap
-# with existing VRRPs id on your network. Default is 10 for the external and 11 for the
-# internal VRRPs
-# haproxy_keepalived_external_virtual_router_id:
-# haproxy_keepalived_internal_virtual_router_id:
-
-# Defines the VRRP master/backup priority. Defaults respectively to 100 and 20
-# haproxy_keepalived_priority_master:
-# haproxy_keepalived_priority_backup:
-
-# Keepalived default IP address used to check its alive status (IPv4 only)
-# keepalived_ping_address: "193.0.14.129"
-
-# All the previous variables are used in a var file, fed to the keepalived role.
-# To use another file to feed the role, override the following var:
-# haproxy_keepalived_vars_file: 'vars/configs/keepalived_haproxy.yml'
-## Load Balancer Configuration (haproxy/keepalived)
-#haproxy_keepalived_external_vip_cidr: "10.0.0.0/24"
-#haproxy_keepalived_internal_vip_cidr: "10.1.0.0/24"
-#haproxy_keepalived_external_interface: br-flat
-#haproxy_keepalived_internal_interface: br-mgmt
-## Host security hardening
-# The openstack-ansible-security role provides security hardening for hosts
-# by applying security configurations from the STIG. Hardening is disabled by
-# default, but an option to opt-in is available by setting the following
-# variable to 'true'.
-# Docs: http://docs.openstack.org/developer/openstack-ansible-security/
-# apply_security_hardening: true
-
-#=======================================================================================
-#haproxy_ssl_self_signed_subject: "/C=US/ST=Texas/L=San Antonio/O=IT/CN=haproxy.example.com"
-#horizon_ssl_self_signed_regen: true
-#rabbitmq_user_ssl_cert:    /tmp/example.com.crt
-#rabbitmq_user_ssl_key:     /tmp/example.com.key
-#rabbitmq_user_ssl_ca_cert: /tmp/ExampleCA.crt
-
-#+++++++++++++++++++++if hardeing of servers are to be avoided++++++++++++++++++++++++++++++++
-#apply_security_hardening: false
-
-##The general format for the variable names used for overrides is
-# <service>_<filename>_<file extension>_overrides. 
-# For example, the variable name used in these examples to add parameters to the nova.conf file
-#  is nova_nova_conf_overrides.
-##
-#
-
-#The general format for the variable 
-#names used for overrides is <service>_<filename>_<file extension>_overrides. 
-#For example, the variable name used in this example to define a meter exclusion 
-#in the pipeline.yml file for the Telemetry service (ceilometer) 
-#is ceilometer_pipeline_yaml_overrides.
-#http://docs.openstack.org/project-deploy-guide/openstack-ansible/newton/app-advanced-config-override.html#overriding-json-files
-
-#Use this method for any files with the INI format for in OpenStack projects deployed in OpenStack-Ansible.
-#++++++++++++++++++++++++Disableing Horizon SSL and CSRF ++++++++++++++++++++++++++++++++=
-
-#check the horizon configurationfile name ??????????????????????????????????????
-#SECURE_PROXY_SSL_HEADER: false
-#CSRF_COOKIE_SECURE: false
-#SESSION_COOKIE_SECURE: false
-#DEBUG: True
-#TEMPLATE_DEBUG: True
-
-
-
-
-
-
-
-#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2
-#
-#Galera:
-#
-#        galera_client_my_cnf_overrides
-#        galera_my_cnf_overrides
-#        galera_cluster_cnf_overrides
-#        galera_debian_cnf_overrides
-#
-#Telemetry service (ceilometer):
-#
-#        ceilometer_policy_overrides
-#        ceilometer_ceilometer_conf_overrides
-#        ceilometer_api_paste_ini_overrides
-#        ceilometer_event_definitions_yaml_overrides
-#        ceilometer_event_pipeline_yaml_overrides
-#        ceilometer_pipeline_yaml_overrides
-#
-#Block Storage (cinder):
-#
-#        cinder_policy_overrides
-#        cinder_rootwrap_conf_overrides
-#        cinder_api_paste_ini_overrides
-#        cinder_cinder_conf_overrides
-#
-#Image service (glance):
-#
-#        glance_glance_api_paste_ini_overrides
-#        glance_glance_api_conf_overrides
-#        glance_glance_cache_conf_overrides
-#        glance_glance_manage_conf_overrides
-#        glance_glance_registry_paste_ini_overrides
-#        glance_glance_registry_conf_overrides
-#        glance_glance_scrubber_conf_overrides
-#        glance_glance_scheme_json_overrides
-#        glance_policy_overrides
-#
-#Orchestration service (heat):
-#
-#        heat_heat_conf_overrides
-#        heat_api_paste_ini_overrides
-#        heat_default_yaml_overrides
-#        heat_aws_cloudwatch_alarm_yaml_overrides
-#        heat_aws_rds_dbinstance_yaml_overrides
-#        heat_policy_overrides
-#
-#Identity service (keystone):
-#
-#        keystone_keystone_conf_overrides
-#        keystone_keystone_default_conf_overrides
-#        keystone_keystone_paste_ini_overrides
-#        keystone_policy_overrides
-#
-#Networking service (neutron):
-#
-#        neutron_neutron_conf_overrides
-#        neutron_ml2_conf_ini_overrides
-#        neutron_dhcp_agent_ini_overrides
-#        neutron_api_paste_ini_overrides
-#        neutron_rootwrap_conf_overrides
-#        neutron_policy_overrides
-#        neutron_dnsmasq_neutron_conf_overrides
-#        neutron_l3_agent_ini_overrides
-#        neutron_metadata_agent_ini_overrides
-#        neutron_metering_agent_ini_overrides
-#
-#Compute service (nova):
-#
-#        nova_nova_conf_overrides
-#        nova_rootwrap_conf_overrides
-#        nova_api_paste_ini_overrides
-#        nova_policy_overrides
-#
-#Object Storage service (swift):
-#
-#        swift_swift_conf_overrides
-#        swift_swift_dispersion_conf_overrides
-#        swift_proxy_server_conf_overrides
-#        swift_account_server_conf_overrides
-#        swift_account_server_replicator_conf_overrides
-#        swift_container_server_conf_overrides
-#        swift_container_server_replicator_conf_overrides
-#        swift_object_server_conf_overrides
-#        swift_object_server_replicator_conf_overrides
-#
-#Tempest:
-#
-#        tempest_tempest_conf_overrides
-#
-#pip:
-#
-#        pip_global_conf_overrides
-
-
-
-#A work around for this issue if you are using Squid for your proxy server is to adjust your Squid configuration to remove the line:
-#
-#"http_access deny CONNECT !SSL_ports"
-#
-#Once you've done so, the proxy lib upon which the Ansible uri module depends will be able to use the HTTP CONNECT method against your proxy
-#
-##
-
-
-
-# # List all existing tags.
-# git tag -l
-
-# # Checkout the stable branch and find just the latest tag
-# git checkout stable/newton
-# git describe --abbrev=0 --tags
-
-# # Checkout the latest tag from either method of retrieving the tag.
-# git checkout 15.0.0.0b3
-
-
-
-#/etc/glance/glance-api.conf
-#In the [glance_store] section, configure the local file system store and location of image files:
-#
-#[glance_store]
-#...
-#stores = file,http
-#default_store = file
-#filesystem_store_datadir = /var/lib/glance/images/
-
-
-#/etc/openstack-dashboard/local_settings.py
-
-
-
-#Deploy OpenStack using OpenStack-Ansible
-#
-#    If SSH on the hosts are configured with a port other than port 22, this ~/.ssh/config must be used on the deployment host. Replace all fields containining < > and <SSH-PORT> sections
-#
-#    Host 172.29.236.<IP-RANGE-HERE>?
-#        User root
-#        Port <SSH-PORT>
-#
-#    Host 172.29.236.<INDIVIDUAL-IP-HOST-HERE>
-#            User root
-#            Port <SSH-PORT>
-#
-#    Host *
-#            User root
-#            Port 22
-
-#percona_package_download_validate_certs: yes
-#galera_ignore_cluster_state: false
-
-#=======================================================================================
-#COPIED from CEPH-ANSIBLE GROUP VARS ALL.YML
-#====================================================================================
-
-# Variables here are applicable to all host groups NOT roles
-
-# This sample file generated by generate_group_vars_sample.sh
-
-# Dummy variable to avoid error because ansible does not recognize the
-# file as a good configuration file when no variable in it.
-dummy:
-
-# You can override vars by using host or group vars
-
-###########
-# GENERAL #
-###########
+#ceph_conf_overrides:
+#   global:
+#     fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
+#     max open files: 131072
+#     mon initial members: ceph2,infra1-ceph-mon-container-d3e29b8f,infra2-ceph-mon-container-9c77d26e,infra3-ceph-mon-container-de00bc75
+#     mon host: 10.0.0.82,10.0.2.138,10.0.2.143,10.0.2.230
+#     public network: 10.0.2.0/24
+#     cluster network: 11.0.0.0/24
+#     auth_cluster_required: cephx
+#     auth_service_required: cephx
 
 fetch_directory: fetch/
-
-# The 'cluster' variable determines the name of the cluster.
-# Changing the default value to something else means that you will
-# need to change all the command line calls as well, for example if
-# your cluster name is 'foo':
-# "ceph health" will become "ceph --cluster foo health"
-#
-# An easier way to handle this is to use the environment variable CEPH_ARGS
-# So run: "export CEPH_ARGS="--cluster foo"
-# With that you will be able to run "ceph health" normally
-#cluster: ceph
-
-###########
-# INSTALL #
-###########
-
-#mon_group_name: mons
-#osd_group_name: osds
-#rgw_group_name: rgws
-#mds_group_name: mdss
-#nfs_group_name: nfss
-#restapi_group_name: restapis
-#rbdmirror_group_name: rbdmirrors
-#client_group_name: clients
-#iscsi_group_name: iscsigws
-
-# If check_firewall is true, then ansible will try to determine if the
-# Ceph ports are blocked by a firewall. If the machine running ansible
-# cannot reach the Ceph ports for some other reason, you may need or
-# want to set this to False to skip those checks.
-#check_firewall: False
-
-# This variable determines if ceph packages can be updated.  If False, the
-# package resources will use "state=present".  If True, they will use
-# "state=latest".
-#upgrade_ceph_packages: False
 upgrade_ceph_packages: True
-
-# /!\ EITHER ACTIVE ceph_stable OR ceph_stable_uca OR ceph_dev OR ceph_custom /!\
-
 debian_package_dependencies:
   - python-pycurl
   - hdparm
   - chrony
 
-#centos_package_dependencies:
-#  - python-pycurl
-#  - hdparm
-#  - epel-release
-#  - ntp
-#  - python-setuptools
-#  - libselinux-python
-
-#redhat_package_dependencies:
-#  - python-pycurl
-#  - hdparm
-#  - ntp
-#  - python-setuptools
-
-# Enable the ntp service by default to avoid clock skew on
-# ceph nodes
 ntp_service_enabled: false
-
-# The list of ceph packages needed for debian.
-# This variable should only be changed if packages are not available from a given
-# install source or architecture.
 debian_ceph_packages:
   - ceph
   - ceph-common    #|--> yes, they are already all dependencies from 'ceph'
 #  - ceph-fs-common #|--> dont install for kraken,  however while proceding to rolling upgrades and the 'ceph' package upgrade
   - ceph-fuse      #|--> they don't get update so we need to force them
 
-# Whether or not to install the ceph-test package.
-#ceph_test: False
-
-## Configure package origin
-#
 ceph_origin: 'upstream' # or 'distro' or 'local'
-# 'distro' means that no separate repo file will be added
-# you will get whatever version of Ceph is included in your Linux distro.
-# 'local' means that the ceph binaries will be copied over from the local machine
-
-# LOCAL CEPH INSTALLATION (ceph_origin==local)
-#
-# Path to DESTDIR of the ceph install
-#ceph_installation_dir: "/path/to/ceph_installation/"
-# Whether or not to use installer script rundep_installer.sh
-# This script takes in rundep and installs the packages line by line onto the machine
-# If this is set to false then it is assumed that the machine ceph is being copied onto will already have
-# all runtime dependencies installed
-#use_installer: false
-# Root directory for ceph-ansible
-#ansible_dir: "/path/to/ceph-ansible"
-
-#ceph_use_distro_backports: false # DEBIAN ONLY
-
-# STABLE
-########
-
 # COMMUNITY VERSION
 ceph_stable: true # use ceph stable branch
-#ceph_mirror: http://download.ceph.com
-#ceph_stable_key: https://download.ceph.com/keys/release.asc
-#ceph_stable_release: jewel # ceph stable release
-ceph_stable_release: kraken  # ceph stable release
-#ceph_stable_repo: "{{ ceph_mirror }}/debian-{{ ceph_stable_release }}"
 
-######################################
-# Releases name to number dictionary #
-######################################
+ceph_stable_release: kraken  # ceph stable release
+
 ceph_release_num:
 #  dumpling: 0.67
 #  emperor: 0.72
@@ -584,134 +106,18 @@ ceph_release_num:
   jewel: 10
   kraken: 11.2.0
 
-# Use the option below to specify your applicable package tree, eg. when using non-LTS Ubuntu versions
-# # for a list of available Debian distributions, visit http://download.ceph.com/debian-{{ ceph_stable_release }}/dists/
-# for more info read: https://github.com/ceph/ceph-ansible/issues/305
-#ceph_stable_distro_source:
 
-# This option is needed for _both_ stable and dev version, so please always fill the right version
-# # for supported distros, see http://download.ceph.com/rpm-{{ ceph_stable_release }}/
-#ceph_stable_redhat_distro: el7
-
-# ENTERPRISE VERSION RED HAT STORAGE (from 1.3)
-# This version is only supported on RHEL >= 7.1
-# As of RHEL 7.1, libceph.ko and rbd.ko are now included in Red Hat's kernel
-# packages natively. The RHEL 7.1 kernel packages are more stable and secure than
-# using these 3rd-party kmods with RHEL 7.0. Please update your systems to RHEL
-# 7.1 or later if you want to use the kernel RBD client.
-#
-# The CephFS kernel client is undergoing rapid development upstream, and we do
-# not recommend running the CephFS kernel module on RHEL 7's 3.10 kernel at this
-# time. Please use ELRepo's latest upstream 4.x kernels if you want to run CephFS
-# on RHEL 7.
-#
-#
-# Backward compatibility of variable names
-# Commit 492518a2 changed variable names of rhcs installations
-# to not break backward compatiblity we re-declare these variables
-# with the content of the new variable
-#ceph_rhcs: "{{ ceph_stable_rh_storage | default(false) }}"
-# This will affect how/what repositories are enabled depending on the desired
-# version. The previous version was 1.3. The current version is 2.
-#ceph_rhcs_version: "{{ ceph_stable_rh_storage_version | default(2) }}"
-#ceph_rhcs_cdn_install: "{{ ceph_stable_rh_storage_cdn_install | default(false) }}" # assumes all the nodes can connect to cdn.redhat.com
-#ceph_rhcs_iso_install: "{{ ceph_stable_rh_storage_iso_install | default(false) }}" # usually used when nodes don't have access to cdn.redhat.com
-#ceph_rhcs_iso_path: "{{ ceph_stable_rh_storage_iso_path | default('') }}"
-#ceph_rhcs_mount_path: "{{ ceph_stable_rh_storage_mount_path | default('/tmp/rh-storage-mount') }}"
-#ceph_rhcs_repository_path: "{{ ceph_stable_rh_storage_repository_path | default('/tmp/rh-storage-repo') }}" # where to copy iso's content
-
-
-# UBUNTU CLOUD ARCHIVE
-# This allows the install of Ceph from the Ubuntu Cloud Archive.  The Ubuntu Cloud Archive
-# usually has newer Ceph releases than the normal distro repository.
-#
-#ceph_stable_uca: false
-#ceph_stable_repo_uca: "http://ubuntu-cloud.archive.canonical.com/ubuntu"
-#ceph_stable_openstack_release_uca: liberty
-#ceph_stable_release_uca: "{{ansible_lsb.codename}}-updates/{{ceph_stable_openstack_release_uca}}"
-
-# DEV
-# ###
-
-#ceph_dev: false # use ceph development branch
-#ceph_dev_branch: master # development branch you would like to use e.g: master, wip-hack
-#ceph_dev_sha1: latest # distinct sha1 to use, defaults to 'latest' (as in latest built)
-
-# CUSTOM
-# ###
-
-# Use a custom repository to install ceph.  For RPM, ceph_custom_repo should be
-# a URL to the .repo file to be installed on the targets.  For deb,
-# ceph_custom_repo should be the URL to the repo base.
-#ceph_custom: false # use custom ceph repository
-#ceph_custom_repo: https://server.domain.com/ceph-custom-repo
-
-
-######################
-# CEPH CONFIGURATION #
-######################
-
-## Ceph options
-#
-# Each cluster requires a unique, consistent filesystem ID. By
-# default, the playbook generates one for you and stores it in a file
-# in `fetch_directory`. If you want to customize how the fsid is
-# generated, you may find it useful to disable fsid generation to
-# avoid cluttering up your ansible repo. If you set `generate_fsid` to
-# false, you *must* generate `fsid` in another way.
-fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
+#fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
 #fsid: "{{ cluster_uuid.stdout }}"
-generate_fsid: false
+generate_fsid: true
 
 #cephx: true
-#max_open_files: 131072
+max_open_files: 131072
 
-## Client options
-#
-#rbd_cache: "true"
-#rbd_cache_writethrough_until_flush: "true"
-#rbd_concurrent_management_ops: 20
-
-#rbd_client_directories: true # this will create rbd_client_log_path and rbd_client_admin_socket_path directories with proper permissions
-
-# Permissions for the rbd_client_log_path and
-# rbd_client_admin_socket_path. Depending on your use case for Ceph
-# you may want to change these values. The default, which is used if
-# any of the variables are unset or set to a false value (like `null`
-# or `false`) is to automatically determine what is appropriate for
-# the Ceph version with non-OpenStack workloads -- ceph:ceph and 0770
-# for infernalis releases, and root:root and 1777 for pre-infernalis
-# releases.
-#
-# For other use cases, including running Ceph with OpenStack, you'll
-# want to set these differently:
-#
-# For OpenStack on RHEL, you'll want:
-#   rbd_client_directory_owner: "qemu"
-#   rbd_client_directory_group: "libvirtd" (or "libvirt", depending on your version of libvirt)
-#   rbd_client_directory_mode: "0755"
-#
-# For OpenStack on Ubuntu or Debian, set:
-#    rbd_client_directory_owner: "libvirt-qemu"
-#    rbd_client_directory_group: "kvm"
-#    rbd_client_directory_mode: "0755"
-#
-# If you set rbd_client_directory_mode, you must use a string (e.g.,
-# 'rbd_client_directory_mode: "0755"', *not*
-# 'rbd_client_directory_mode: 0755', or Ansible will complain: mode
-# must be in octal or symbolic form
-#rbd_client_directory_owner: null
-#rbd_client_directory_group: null
-#rbd_client_directory_mode: null
-
-#rbd_client_log_path: /var/log/ceph
-#rbd_client_log_file: "{{ rbd_client_log_path }}/qemu-guest-$pid.log" # must be writable by QEMU and allowed by SELinux or AppArmor
-#rbd_client_admin_socket_path: /var/run/ceph # must be writable by QEMU and allowed by SELinux or AppArmor
 
 ## Monitor options
 #
-# You must define either monitor_interface or monitor_address. Preference
-# will go to monitor_interface if both are defined.
+# You must define either monitor_interface or monitor_address. Preference # will go to monitor_interface if both are defined.
 monitor_interface: br-storage
 monitor_address: 10.0.2.0/24
 # set to either ipv4 or ipv6, whichever your network is using
@@ -725,199 +131,10 @@ journal_size: 5120 # OSD journal size in MB
 public_network: 10.0.2.0/24
 cluster_network: 11.0.0.0/24
 osd_mkfs_type: xfs
-#osd_mkfs_options_xfs: -f -i size=2048
-#osd_mount_options_xfs: noatime,largeio,inode64,swalloc
-#osd_objectstore: filestore
 
-# xattrs. by default, 'filestore xattr use omap' is set to 'true' if
-# 'osd_mkfs_type' is set to 'ext4'; otherwise it isn't set. This can
-# be set to 'true' or 'false' to explicitly override those
-# defaults. Leave it 'null' to use the default for your chosen mkfs
-# type.
-#filestore_xattr_use_omap: null
-
-## MDS options
-#
-#mds_use_fqdn: false # if set to true, the MDS name used will be the fqdn in the ceph.conf
-#mds_allow_multimds: false
-#mds_max_mds: 3
-
-## Rados Gateway options
-#
-#radosgw_dns_name: your.subdomain.tld # subdomains used by radosgw. See http://ceph.com/docs/master/radosgw/config/#enabling-subdomain-s3-calls
-#radosgw_resolve_cname: false # enable for radosgw to resolve DNS CNAME based bucket names
-#radosgw_civetweb_port: 8080
-#radosgw_civetweb_bind_ip: "{{ ansible_default_ipv4.address }}" # when using ipv6 enclose with brackets: "[{{ ansible_default_ipv6.address }}]"
 radosgw_civetweb_bind_ip: 10.0.0.81
-#radosgw_civetweb_num_threads: 50
-# For additional civetweb configuration options available such as SSL, logging,
-# keepalive, and timeout settings, please see the civetweb docs at
-# https://github.com/civetweb/civetweb/blob/master/docs/UserManual.md
-#radosgw_civetweb_options: "port={{ radosgw_civetweb_bind_ip }}:{{ radosgw_civetweb_port }} num_threads={{ radosgw_civetweb_num_threads }}"
-#radosgw_keystone: false # activate OpenStack Keystone options full detail here: http://ceph.com/docs/master/radosgw/keystone/
-#radosgw_keystone_url: # url:admin_port ie: http://192.168.0.1:35357
-#radosgw_keystone_api_version: 2 # API versions 2 and 3 are supported
-#radosgw_keystone_ssl: true # Can be used to disable PKI revocation checks when other token types are used.
-# for admin_token method, define radosgw_keystone_admin_token
-# for auth_token method, define _user, _password, and _tenant
-#radosgw_keystone_auth_method: admin_token
-#radosgw_keystone_admin_token: password
-#radosgw_keystone_admin_user: username
-#radosgw_keystone_admin_password: password
-#radosgw_keystone_admin_tenant: tenant
-#radosgw_keystone_admin_domain: default
-#radosgw_keystone_accepted_roles: Member, _member_, admin
-#radosgw_keystone_token_cache_size: 10000
-#radosgw_keystone_revocation_internal: 900
-#radosgw_s3_auth_use_keystone: "true"
-#radosgw_nss_db_path: /var/lib/ceph/radosgw/ceph-radosgw.{{ ansible_hostname }}/nss
-# Settings for the RGW usage logging described at http://docs.ceph.com/docs/jewel/man/8/radosgw/#usage-logging
-#radosgw_usage_log: false
-#radosgw_usage_log_tick_interval: 30
-#radosgw_usage_log_flush_threshold: 1024
-#radosgw_usage_max_shards: 32
-#radosgw_usage_max_user_shards: 1
-# Settings for static website hosting
-#radosgw_static_website: false
-#radosgw_dns_s3website_name: your.subdomain.tld # subdomain used by radosgw for website bucket hosting.
-# Rados Gateway options
-#email_address: foo@bar.com
-
-## REST API options
-#
-#restapi_interface: "{{ monitor_interface }}"
-#restapi_address: "{{ monitor_address }}"
-#restapi_port: 5000
-
-## Testing mode
-# enable this mode _only_ when you have a single node
-# if you don't want it keep the option commented
-#common_single_host_mode: true
-
-## Handlers - restarting daemons after a config change
-# if for whatever reasons the content of your ceph configuration changes
-# ceph daemons will be restarted as well. At the moment, we can not detect
-# which config option changed so all the daemons will be restarted. Although
-# this restart will be serialized for each node, in between a health check
-# will be performed so we make sure we don't move to the next node until
-# ceph is not healthy
-# Obviously between the checks (for monitors to be in quorum and for osd's pgs
-# to be clean) we have to wait. These retries and delays can be configurable
-# for both monitors and osds.
-#handler_health_mon_check_retries: 5
-#handler_health_mon_check_delay: 10
-#handler_health_osd_check_retries: 40
-#handler_health_osd_check_delay: 30
-#handler_health_osd_check: true
-
-###################
-# CONFIG OVERRIDE #
-###################
-
-# Ceph configuration file override.
-# This allows you to specify more configuration options
-# using an INI style format.
-# The following sections are supported: [global], [mon], [osd], [mds], [rgw]
-#
-# Example:
-# ceph_conf_overrides:
-#   global:
-#     foo: 1234
-#     bar: 5678
-#
-#ceph_conf_overrides: {}
-
-
-#############
-# OS TUNING #
-#############
-
-#disable_transparent_hugepage: true
-#os_tuning_params:
-#  - { name: kernel.pid_max, value: 4194303 }
-#  - { name: fs.file-max, value: 26234859 }
-#  - { name: vm.zone_reclaim_mode, value: 0 }
-#  - { name: vm.vfs_cache_pressure, value: 50 }
-#  - { name: vm.swappiness, value: 10 }
-#  - { name: vm.min_free_kbytes, value: "{{ vm_min_free_kbytes }}" }
-
-
-##########
-# DOCKER #
-##########
-
-#docker: false
-#ceph_docker_image: "ceph/daemon"
-#ceph_docker_image_tag: latest
-
-# Do not comment the following variables mon_containerized_deployment_* here. These variables are being used
-# by ceph.conf.j2 template. so it should always be defined
-#mon_containerized_deployment_with_kv: false
-#mon_containerized_deployment: false
-#mon_containerized_default_ceph_conf_with_kv: false
-
-# Confiure the type of NFS gatway access.  At least one must be enabled for an
-# NFS role to be useful
-#
-# Set this to true to enable File access via NFS.  Requires an MDS role.
-#nfs_file_gw: true
-# Set this to true to enable Object access via NFS. Requires an RGW role.
-#nfs_obj_gw: false
-
-# this is only here for usage with the rolling_update.yml playbook
-# do not ever change this here
-#rolling_update: false
-
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-#Copied from  ceph-ansible   griup vars  mons.yml 
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-# Variables here are applicable to all host groups NOT roles
-
-# This sample file generated by generate_group_vars_sample.sh
-
-# Dummy variable to avoid error because ansible does not recognize the
-# file as a good configuration file when no variable in it.
 dummy:
 
-# You can override vars by using host or group vars  
-
-###########
-# GENERAL #
-###########
-
-fetch_directory: fetch/
-
-#mon_group_name: mons
-
-# ACTIVATE BOTH FSID AND MONITOR_SECRET VARIABLES FOR NON-VAGRANT DEPLOYMENT
-#fsid: "{{ cluster_uuid.stdout }}"
-fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
-#monitor_secret: "{{ monitor_keyring.stdout }}"
-#cephx: true
-
-# CephFS
-#cephfs_data: cephfs_data
-#cephfs_metadata: cephfs_metadata
-#cephfs: cephfs
-
-# Secure your cluster
-# This will set the following flags on all the pools:
-# * nosizechange
-# * nopgchange
-# * nodelete
-
-#secure_cluster: false
-#secure_cluster_flags:
-#  - nopgchange
-#  - nodelete
-#  - nosizechange
-
-# Enable the Calamari-backed REST API on a Monitor
-#calamari: false
-
-#############
-# OPENSTACK #
-#############
 
 openstack_config: true
 openstack_glance_pool:
@@ -945,131 +162,24 @@ openstack_keys:
   - { name: client.cinder-backup, value: "mon 'allow r' osd 'allow class-read object_prefix rbd_children, allow rwx pool={{ openstack_cinder_backup_pool.name }}'" }
 
 #=================================================================================================
-# By default, Ceph makes 3 replicas of objects. If you want to make four 
-  # copies of an object the default value--a primary copy and three replica 
-  # copies--reset the default values as shown in 'osd pool default size'.
-  # If you want to allow Ceph to write a lesser number of copies in a degraded 
+# By default, Ceph makes 3 replicas of objects. If you want to make four   # copies of an object the default value--a primary copy and three replica 
+  # copies--reset the default values as shown in 'osd pool default size'.  # If you want to allow Ceph to write a lesser number of copies in a degraded 
   # state, set 'osd pool default min size' to a number less than the
   # 'osd pool default size' value.
 
 osd_pool_default_size: 5  # Write an object 5 times.
 osd_pool_default_min_size: 2 # Allow writing one copy in a degraded state.
 
-  # Ensure you have a realistic number of placement groups. We recommend
-  # approximately 100 per OSD. E.g., total number of OSDs multiplied by 100 
-  # divided by the number of replicas (i.e., osd pool default size). So for
-  # 10 OSDs and osd pool default size = 4, we'd recommend approximately
+  # Ensure you have a realistic number of placement groups. We recommend   # approximately 100 per OSD. E.g., total number of OSDs multiplied by 100 
+  # divided by the number of replicas (i.e., osd pool default size). So for   # 10 OSDs and osd pool default size = 4, we'd recommend approximately
   # (100 * 10) / 4 = 250.
 
 osd_pool_default_pg_num: 250
 osd_pool_default_pgp_num: 250
 
-#===============================================================================================
 
-##########
-# DOCKER #
-##########
-
-#mon_containerized_deployment: false
-#mon_containerized_deployment_with_kv: false
-# This is currently in ceph-common defaults because it is shared with ceph-nfs
-#mon_containerized_default_ceph_conf_with_kv: false
-#ceph_mon_docker_interface: "{{ monitor_interface }}"
-#ceph_mon_docker_subnet: "{{ public_network }}"# subnet of the ceph_mon_docker_interface
-#ceph_docker_image: "ceph/daemon"
-#ceph_docker_image_tag: latest
-#ceph_mon_docker_extra_env: -e CLUSTER={{ cluster }} -e FSID={{ fsid }} -e MON_NAME={{ ansible_hostname }}
-#ceph_docker_on_openstack: false
-#mon_docker_privileged: false
-#mon_docker_net_host: true
-#ceph_config_keys: [] # DON'T TOUCH ME
-#ceph_mon_docker_enable_centos_extra_repo: false
-
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-#Copiued from ceph-ansible group vars osd.yml
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-# Variables here are applicable to all host groups NOT roles
-
-# This sample file generated by generate_group_vars_sample.sh
-
-# Dummy variable to avoid error because ansible does not recognize the
-# file as a good configuration file when no variable in it.
-dummy:
-
-# Variables here are applicable to all host groups NOT roles
-
-# This sample file generated by generate_group_vars_sample.sh
-
-# Dummy variable to avoid error because ansible does not recognize the
-# file as a good configuration file when no variable in it.
-#dummy:
-
-# You can override default vars defined in defaults/main.yml here,
-# but I would advice to use host or group vars instead
-
-
-###########
-# GENERAL #
-###########
-
-fetch_directory: fetch/
-
-# Even though OSD nodes should not have the admin key
-# at their disposal, some people might want to have it
-# distributed on OSD nodes. Setting 'copy_admin_key' to 'true'
-# will copy the admin key to the /etc/ceph/ directory
-#copy_admin_key: false
-
-
-####################
-# OSD CRUSH LOCATION
-####################
-
-# /!\
-#
-# BE EXTREMELY CAREFUL WITH THIS OPTION
-# DO NOT USE IT UNLESS YOU KNOW WHAT YOU ARE DOING
-#
-# /!\
-#
-# It is probably best to keep this option to 'false' as the default
-# suggests it. This option should only be used while doing some complex
-# CRUSH map. It allows you to force a specific location for a set of OSDs.
-#
-# The following options will build a ceph.conf with OSD sections
-# Example:
-# [osd.X]
-# osd crush location = "root=location"
-#
-# This works with your inventory file
-# To match the following 'osd_crush_location' option the inventory must look like:
-#
-# [osds]
-# osd0 ceph_crush_root=foo ceph_crush_rack=bar
-
-#crush_location: false
-#osd_crush_location: "'root={{ ceph_crush_root }} rack={{ ceph_crush_rack }} host={{ ansible_hostname }}'"
-
-
-##############
-# CEPH OPTIONS
-##############
-
-# ACTIVATE THE FSID VARIABLE FOR NON-VAGRANT DEPLOYMENT
-#fsid: "{{ cluster_uuid.stdout }}"
-fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
-#cephx: true
-
-# Devices to be used as OSDs
-# You can pre-provision disks that are not present yet.
-# Ansible will just skip them. Newly added disk will be
-# automatically configured during the next run.
-#
-
-
-# Declare devices to be used as OSDs
-# All scenario(except 3rd) inherit from the following device declaration
+# Devices to be used as OSDs # You can pre-provision disks that are not present yet.# Ansible will just skip them. Newly added disk will be
+# automatically configured during the next run. # Declare devices to be used as OSDs # All scenario(except 3rd) inherit from the following device declaration
 
 devices:
   - /dev/sdb
@@ -1077,128 +187,8 @@ devices:
 #  - /dev/sdd
 #  - /dev/sde
 
-#devices: []
-
-
-#'osd_auto_discovery'  mode prevents you from filling out the 'devices' variable above.
-#  You can use this option with First and Forth and Fifth OSDS scenario.
-# Device discovery is based on the Ansible fact 'ansible_devices'
-# which reports all the devices on a system. If chosen all the disks
-# found will be passed to ceph-disk. You should not be worried on using
-# this option since ceph-disk has a built-in check which looks for empty devices.
-# Thus devices with existing partition tables will not be used.
-#
-#osd_auto_discovery: true
-
-
-# !! WARNING !!
-# #
-# # /!\ ENABLE ONLY ONE SCENARIO AT A TIME /!\
-# #
-# #  !! WARNING !!
-#
-
-# I. First scenario: journal and osd_data on the same device
-# Use 'true' to enable this scenario
-# This will collocate both journal and data on the same disk
-# creating a partition at the beginning of the device
-# List devices under 'devices' variable above or choose 'osd_auto_discovery'
-
-
 journal_collocation: true
 
-
-# II.  Second scenario:  N journal devices for N OSDs
-# Use 'true' for 'raw_multi_journal' to enable this scenario
-# List devices under 'devices' variable above and 
-# write journal devices for those under 'raw_journal_devices'
-# In the following example:
-# * sdb and sdc will get sdf as a journal
-# * sdd and sde will get sdg as a journal
-
-# While starting you have 2 options:
-# 1. Pre-allocate all the devices
-# 2. Progressively add new devices
-#raw_multi_journal: true
-#raw_journal_devices:
-#  - /dev/sdb
-#  - /dev/sdf
-#  - /dev/sdg
-#  - /dev/sdg
-#
-# NOTE(leseb):
-# On a containerized scenario we only support A SINGLE journal
-# for all the OSDs on a given machine. If you don't, bad things will happen
-# This is a limitation we plan to fix at some point.
-#raw_journal_devices: ['/dev/sdb']
-
-
-# III. Use directory instead of disk for OSDs
-# Use 'true' to enable this scenario
-
-#osd_directory: false
-#osd_directories:
-#  - /var/lib/ceph/osd/mydir1
-#  - /var/lib/ceph/osd/mydir2
-#osd_directories: []
-
-
-# IV. This will partition disks for BlueStore
-# Use 'true' to enable this scenario
-#bluestore: false
-
-
-# V. Encrypt osd data and/or journal devices with dm-crypt.
-# Keys are stored into the monitors k/v store
-# Use 'true' to enable this scenario
-# Both journal and data are stored on the same dm-crypt encrypted device
-#dmcrypt_journal_collocation: false
-
-
-# VI. Encrypt osd data and/or journal devices with dm-crypt.
-# Keys are stored into the monitors k/v store
-# Use 'true' to enable this scenario
-# Journal and osd data are separated, each with their own dm-crypt device
-# You must use raw_journal_devices and set your journal devices
-#dmcrypt_dedicated_journal: false
-
-
-##########
-# DOCKER #
-##########
-
-#osd_containerized_deployment: false
-#osd_containerized_deployment_with_kv: false
-#kv_type: etcd
-#kv_endpoint: 127.0.0.1
-#kv_port: 4001
-#ceph_docker_image: "ceph/daemon"
-#ceph_docker_image_tag: latest
-#ceph_config_keys: [] # DON'T TOUCH ME
-#ceph_docker_on_openstack: false
-
-# PREPARE DEVICE
-# Make sure you only pass a single device to raw_journal_devices, otherwise this will fail horribly.
-# This is why we use [0] in the example.
-#
-# WARNING /!\ DMCRYPT scenario ONLY works with Docker version 1.12.5 and above
-#
-# Examples:
-# Journal collocated: ceph_osd_docker_prepare_env: -e CLUSTER={{ cluster }} -e OSD_JOURNAL_SIZE={{ journal_size }} -e OSD_FORCE_ZAP=1
-# Dedicated journal: ceph_osd_docker_prepare_env: -e CLUSTER={{ cluster }} -e OSD_JOURNAL_SIZE={{ journal_size }} -e OSD_FORCE_ZAP=1 -e OSD_JOURNAL={{ raw_journal_devices[0] }}
-# Encrypted OSD: ceph_osd_docker_prepare_env: -e CLUSTER={{ cluster }} -e OSD_JOURNAL_SIZE={{ journal_size }} -e OSD_FORCE_ZAP=1 -e OSD_DMCRYPT=1
-# Encrypted OSD with dedicated journal: ceph_osd_docker_prepare_env: -e CLUSTER={{ cluster }} -e OSD_JOURNAL_SIZE={{ journal_size }} -e OSD_FORCE_ZAP=1 -e OSD_DMCRYPT=1 -e OSD_JOURNAL={{ raw_journal_devices[0] }}
-#
-#ceph_osd_docker_devices: "{{ devices }}"
-#ceph_osd_docker_prepare_env: -e CLUSTER={{ cluster }} -e OSD_JOURNAL_SIZE={{ journal_size }} -e OSD_FORCE_ZAP=1
-
-# ACTIVATE DEVICE
-# Examples:
-# Journal collocated or Dedicated journal: ceph_osd_docker_extra_env: -e CLUSTER={{ cluster }} -e CEPH_DAEMON=OSD_CEPH_DISK_ACTIVATE -e OSD_JOURNAL_SIZE={{ journal_size }}
-# Encrypted OSD or Encrypted OSD with dedicated journal: ceph_osd_docker_extra_env: -e CLUSTER={{ cluster }} -e CEPH_DAEMON=OSD_CEPH_DISK_ACTIVATE -e OSD_JOURNAL_SIZE={{ journal_size }} -e OSD_DMCRYPT=1
-#
-#ceph_osd_docker_extra_env: -e CLUSTER={{ cluster }} -e CEPH_DAEMON=OSD_CEPH_DISK_ACTIVATE -e OSD_JOURNAL_SIZE={{ journal_size }}
-#ceph_osd_docker_run_script_path: "/usr/share" # script called by systemd to run the docker command
 
 
 
