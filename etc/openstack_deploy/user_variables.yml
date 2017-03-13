@@ -165,6 +165,8 @@ ceph_conf_overrides:
      mon host: 10.0.0.82,10.0.2.138,10.0.2.143,10.0.2.230
      public network: 10.0.2.0/24
      cluster network: 11.0.0.0/24
+     auth_cluster_required: cephx
+     auth_service_required: cephx
 #     bar: 5678
 
 # By default, openstack-ansible configures all OpenStack services to talk to
@@ -663,7 +665,7 @@ fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
 #fsid: "{{ cluster_uuid.stdout }}"
 generate_fsid: false
 
-#cephx: true
+cephx: true
 #max_open_files: 131072
 
 ## Client options
@@ -893,7 +895,7 @@ fetch_directory: fetch/
 #fsid: "{{ cluster_uuid.stdout }}"
 fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
 #monitor_secret: "{{ monitor_keyring.stdout }}"
-#cephx: true
+cephx: true
 
 # CephFS
 #cephfs_data: cephfs_data
@@ -1059,7 +1061,7 @@ fetch_directory: fetch/
 # ACTIVATE THE FSID VARIABLE FOR NON-VAGRANT DEPLOYMENT
 #fsid: "{{ cluster_uuid.stdout }}"
 fsid: d840564a-c2c1-4aa0-bae5-ea7ddf070edc
-#cephx: true
+cephx: true
 
 # Devices to be used as OSDs
 # You can pre-provision disks that are not present yet.
