@@ -49,8 +49,8 @@ ceph_mons:
 # hosts.
 nova_libvirt_images_rbd_pool: vms
 
-glance_default_store: rbd 
-# glance_default_store: file
+#glance_default_store: rbd 
+glance_default_store: file
 
 ## Ceph pool name for Glance to use
 glance_rbd_store_pool: images
