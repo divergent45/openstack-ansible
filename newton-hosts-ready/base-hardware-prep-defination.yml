@@ -19,7 +19,7 @@ Chrony_master_server_uplink_names: |
 Chrony_clients_uplink_names: |
   server 10.0.0.52
   server 10.0.0.50
-  server 10.0.0.11
+  
 nfs_server_hostnames: 
   - rsyslog
   - newtonhost1
