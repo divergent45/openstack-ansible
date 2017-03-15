@@ -105,23 +105,65 @@ network_interfaces:
      - {forHost: controller3, description: Primary and First physical interface, name: eno1,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for openstack managment network,bridge_name: br-mgmt,
-        bridge_address: 10.0.0.13,bridge_netmask: 255.255.255.0,bridge_broadcast: ,bridge_gateway: ,
+        bridge_address: 10.0.0.13,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.0.255,bridge_gateway: ,
         bridge_dns: }        
      - {forHost: controller3, description: VLAN10 sitting on First Physical Interface, name: eno1.10 ,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for Storage network,bridge_name: br-storage,
-        bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
+        bridge_address: 10.0.2.13,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.2.255,bridge_gateway: ,
         bridge_dns: }        
      - {forHost: controller3, description: Second physical interface, name: eno2 ,address: ,netmask: ,broadcast: ,
-        gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno2,part_of_bridge: True,
         bridge_description: Bridge for Providers Network,bridge_name: br-vlan,
         bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
         bridge_dns: }          
      - {forHost: controller3, description: VLAN2.10 sitting on Second Physical Interface, name: eno2.10 ,address: ,netmask: ,broadcast: ,
-        gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno2,part_of_bridge: True,
         bridge_description: Bridge for Self Service Network,bridge_name: br-vxlan,
         bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
         bridge_dns: } 
+#interfaces for controller 2        
+     - {forHost: controller2, description: Primary and First physical interface, name: eno1,address: ,netmask: ,broadcast: ,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
+        bridge_description: Bridge for openstack managment network,bridge_name: br-mgmt,
+        bridge_address: 10.0.0.12,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.0.255,bridge_gateway: ,
+        bridge_dns: }        
+     - {forHost: controller2, description: VLAN10 sitting on First Physical Interface, name: eno1.10 ,address: ,netmask: ,broadcast: ,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
+        bridge_description: Bridge for Storage network,bridge_name: br-storage,
+        bridge_address: 10.0.2.12,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.2.255,bridge_gateway: ,
+        bridge_dns: }        
+     - {forHost: controller2, description: Second physical interface, name: eno2 ,address: ,netmask: ,broadcast: ,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno2,part_of_bridge: True,
+        bridge_description: Bridge for Providers Network,bridge_name: br-vlan,
+        bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
+        bridge_dns: }          
+     - {forHost: controller2, description: VLAN2.10 sitting on Second Physical Interface, name: eno2.10 ,address: ,netmask: ,broadcast: ,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno2,part_of_bridge: True,
+        bridge_description: Bridge for Self Service Network,bridge_name: br-vxlan,
+        bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
+        bridge_dns: }
+#interfaces for controller 5        
+     - {forHost: controller5, description: Primary and First physical interface, name: eno1,address: ,netmask: ,broadcast: ,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
+        bridge_description: Bridge for openstack managment network,bridge_name: br-mgmt,
+        bridge_address: 10.0.0.15,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.0.255,bridge_gateway: ,
+        bridge_dns: }        
+     - {forHost: controller5, description: VLAN10 sitting on First Physical Interface, name: eno1.10 ,address: ,netmask: ,broadcast: ,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
+        bridge_description: Bridge for Storage network,bridge_name: br-storage,
+        bridge_address: 10.0.2.15,bridge_netmask: 255.255.255.0,bridge_broadcast: 10.0.2.255,bridge_gateway: ,
+        bridge_dns: }        
+     - {forHost: controller5, description: Second physical interface, name: eno2 ,address: ,netmask: ,broadcast: ,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno2,part_of_bridge: True,
+        bridge_description: Bridge for Providers Network,bridge_name: br-vlan,
+        bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
+        bridge_dns: }          
+     - {forHost: controller5, description: VLAN2.10 sitting on Second Physical Interface, name: eno2.10 ,address: ,netmask: ,broadcast: ,
+        gateway: ,dns: ,part_of_vlan: True,parent_name: eno2,part_of_bridge: True,
+        bridge_description: Bridge for Self Service Network,bridge_name: br-vxlan,
+        bridge_address: ,bridge_netmask: ,bridge_broadcast: ,bridge_gateway: ,
+        bridge_dns: }         
 #interfaces for dcim ,aka , haproxy1
      - {forHost: dcim, description: Primary and First physical interface, name: enp9s0,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: enp9s0,part_of_bridge: True,
@@ -134,13 +176,13 @@ network_interfaces:
         bridge_address: 14.142.104.138,bridge_netmask: 255.255.255.248 ,bridge_broadcast: 14.142.104.143 ,
         bridge_gateway: 14.142.104.137,
         bridge_dns: 115.112.18.21 115.112.18.131} 
-# interface for DCIM2 . haproxy 2     
-     - {forHost: dcim2, description: Primary and First physical interface, name: eno1,address: ,netmask: ,broadcast: ,
+# interface for haproxy 2     
+     - {forHost: haproxy2, description: Primary and First physical interface, name: eno1,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno1,part_of_bridge: True,
         bridge_description: Bridge for openstack managment network,bridge_name: br-mgmt,
         bridge_address: 10.0.0.50,bridge_netmask: 255.255.255.0,bridge_broadcast: ,bridge_gateway: ,
         bridge_dns: }        
-     - {forHost: dcim2, description: Second Physical Interface, name: eno2 ,address: ,netmask: ,broadcast: ,
+     - {forHost: haproxy2, description: Second Physical Interface, name: eno2 ,address: ,netmask: ,broadcast: ,
         gateway: ,dns: ,part_of_vlan: True,parent_name: eno2,part_of_bridge: True,
         bridge_description: Bridge for internet,bridge_name: br-internet,
         bridge_address: 14.142.104.139,bridge_netmask: 255.255.255.248 ,bridge_broadcast: 14.142.104.143 ,
