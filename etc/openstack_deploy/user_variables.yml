@@ -1,6 +1,8 @@
 ---
 ## Debug and Verbose options.
 debug: false
+validate_certs: false
+percona_package_download_validate_certs: false
 
 proxy_env_url: http://dcim:3128/
 # no_proxy_env: "localhost,127.0.0.1,{{ internal_lb_vip_address }},{{ external_lb_vip_address }},{% for host in groups['all_containers'] %}{{ hostvars[host]['container_address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
