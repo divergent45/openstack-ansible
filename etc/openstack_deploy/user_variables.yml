@@ -77,11 +77,11 @@ glance_ceilometer_enabled: True
 nova_ceilometer_enabled: True
 neutron_ceilometer_enabled: True
 keystone_ceilometer_enabled: True
-#ceilometer_ceilometer_conf_overrides:
-#  coordination:
-#    backend_url: "memcached://10.0.0.151:11211"
-#  notification:
-#    workload_partitioning: True
+ceilometer_ceilometer_conf_overrides:
+  coordination:
+    backend_url: "memcached://10.0.0.151:11211"
+  notification:
+    workload_partitioning: True
 ceilometer_aodh_enabled: false
 ceilometer_gnocchi_enabled: false
 
