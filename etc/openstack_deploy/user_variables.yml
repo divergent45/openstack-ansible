@@ -82,6 +82,6 @@ ceilometer_ceilometer_conf_overrides:
     backend_url: "memcached://10.0.0.151:11211"
   notification:
     workload_partitioning: True
-ceilometer_aodh_enabled: false
-ceilometer_gnocchi_enabled: false
+#ceilometer_aodh_enabled: false
+#ceilometer_gnocchi_enabled: false
 
