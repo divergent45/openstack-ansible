@@ -1,4 +1,7 @@
 ---
+## set security hardening to false during upgrade
+#apply_security_hardening: False
+
 ## Debug and Verbose options.
 debug: false
 validate_certs: false
@@ -74,10 +77,10 @@ glance_ceilometer_enabled: True
 nova_ceilometer_enabled: True
 neutron_ceilometer_enabled: True
 keystone_ceilometer_enabled: True
-ceilometer_ceilometer_conf_overrides:
-  coordination:
-    backend_url: "memcached://10.0.0.151:11211"
-  notification:
-    workload_partitioning: True
+#ceilometer_ceilometer_conf_overrides:
+#  coordination:
+#    backend_url: "memcached://10.0.0.151:11211"
+#  notification:
+#    workload_partitioning: True
 
 
