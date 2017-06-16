@@ -65,4 +65,4 @@
   roles:
     - role: "openstack_hosts"
   tags:
-    - openstack-hosts
+    - openstack-hosts 
